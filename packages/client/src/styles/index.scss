@@ -1,0 +1,73 @@
+@use "@angular/material" as mat;
+@use "./flex";
+@use "./ext/material/index";
+@use "./util.scss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+html {
+  color-scheme: light dark;
+  @include mat.theme(
+    (
+      color: mat.$violet-palette,
+      typography: (
+        plain-family: Roboto,
+        brand-family: Open Sans,
+        bold-weight: 900,
+        medium-weight: 500,
+        regular-weight: 300
+      ),
+      density: 0
+    )
+  );
+}
+
+
+
+.error-theme {
+  @include mat.theme(
+    (
+      color: mat.$red-palette,
+      typography: Roboto
+    )
+  );
+  // @include mat.snack-bar-overrides(
+  //   (
+  //     container-color: #f44336,
+  //     supporting-text-color: white,
+  //     supporting-text-weight: bold,
+  //     button-color: white
+  //   )
+  // );
+}
+.success-theme {
+  @include mat.snack-bar-overrides(
+    (
+      container-color: #41fc86,
+      supporting-text-weight: bold,
+      button-color: black
+    )
+  );
+}
+.warning-theme {
+  @include mat.snack-bar-overrides(
+    (
+      container-color: #ffd700,
+      supporting-text-weight: bold,
+      button-color: #ff8c00
+    )
+  );
+}
+.info-theme {
+  @include mat.snack-bar-overrides(
+    (
+      container-color: #2196f3,
+      supporting-text-color: white,
+      supporting-text-weight: normal,
+      button-color: white
+    )
+  );
+}

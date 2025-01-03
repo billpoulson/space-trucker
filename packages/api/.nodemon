@@ -1,0 +1,11 @@
+{
+	"watch": [
+		"src/**/*.ts",
+		"src/**/*.json"
+	],
+	"ext": "ts",
+	"exec": [
+		"yarn run start"
+	]
+}
+

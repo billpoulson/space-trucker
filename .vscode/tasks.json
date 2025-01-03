@@ -1,0 +1,144 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ng serve",
+      "type": "shell",
+      "command": "ng serve",
+      "dependsOn": "ng build",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "angular",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": [
+          {
+            "regexp": "^(.+):\\[(\\d+),\\s*(\\d+)\\]:\\s*(ERROR|WARNING)\\s*-\\s*(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Changes detected.*",
+          "endsPattern": ".*bundle generation complete.*"
+        },
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "ng build",
+      "dependsOn":"watch common",
+      "type": "shell",
+      "command": "ng build @space-truckers/client",
+      "problemMatcher": {
+        "owner": "angular",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*):\\s*(\\d+):\\s*(\\d+) -\\s*(error|warning)\\s*(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "watch types",
+      "type": "shell",
+      "command": "npm run watch -w=@space-truckers/types",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "angular",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*):\\s*(\\d+):\\s*(\\d+) -\\s*(error|warning)\\s*(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Building Angular Package.*",
+          "endsPattern": ".*Angular Package.*"
+        },
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "watch common",
+      "type": "shell",
+      "command": "npm run watch -w=@space-truckers/common",
+      "isBackground": true,
+      "dependsOn":"watch types",
+      "problemMatcher": {
+        "owner": "angular",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*):\\s*(\\d+):\\s*(\\d+) -\\s*(error|warning)\\s*(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Building Angular Package.*",
+          "endsPattern": ".*Built @space-truckers/common.*"
+        },
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+  ]
+}

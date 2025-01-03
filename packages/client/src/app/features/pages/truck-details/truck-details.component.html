@@ -1,0 +1,10 @@
+<p>TRUCK DETAILS</p>
+<button mat-stroked-button color="primary" appGoBack>
+  Back
+</button>
+<app-truck-details style="flex-grow: 1;" />
+<h1>USER INFO</h1>
+<ul *ngIf="authService.user$ | async as user">
+  <li>{{ user.name }}</li>
+  <li>{{ user.email }}</li>
+</ul>

@@ -1,0 +1,20 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.stack-container {
+  /* display: contents; */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10px, 1fr));
+  grid-auto-rows: 10px;
+  height: 100px; /* Adjust as necessary */
+  /* border: 1px solid #ddd;   */
+  gap: 1px;
+}
+
+.block {
+  width: 10px;
+  height: 10px;
+  background-color: #00f;
+}
