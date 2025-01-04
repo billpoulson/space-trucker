@@ -1,5 +1,5 @@
 import { Dictionary } from '@space-truckers/types'
-import { getDbRef } from './db.util'
+import { getDbRef } from '../util'
 
 export class LoginDBSchema {
   static create(path: string) {

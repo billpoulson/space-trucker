@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { convertToKebabCase, MessageConstructor, MessageData } from '@space-truckers/common'
-import { filter, map, Observable } from 'rxjs'
+import { filter, map, Observable, tap } from 'rxjs'
 import { AuthroizedWebSocketService } from '../services/sockets/authorized-web-socket.service'
 
 
@@ -31,13 +31,13 @@ export class AppMessageQueue {
   selectTypedMessage<TData>(
     MessageClass: MessageConstructor<TData, MessageData<TData>>
   ) {
+    let rxCount = -1;// number of messages received on this selector
     return this.mq.pipe(
-      filter(({ type }) => {
-        return type === convertToKebabCase(MessageClass.name)
+      filter(({ type }) => type === convertToKebabCase(MessageClass.name)),
+      tap(({ uuid }) => {
+        console.log(`${rxCount++} : received message ${uuid} ${convertToKebabCase(MessageClass.name)}`)
       }),
-      map(({ data }) => {
-        return data as TData
-      })
+      map(({ data }) => data as TData)
     )
   }
 

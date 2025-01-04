@@ -1,20 +1,8 @@
-import { Injectable } from 'injection-js'
+import { UserInfoObject } from '@space-truckers/types'
 import { Low } from 'lowdb/lib/core/Low'
-import { LoginDBSchema } from './logins.db'
-export class UserInfoObject {
-    constructor(
-      public sub: string,
-      public given_name: string,
-      public family_name: string,
-      public nickname: string,
-      public name: string,
-      public picture: string,
-      public updated_at: string,
-      public email: string,
-      public email_verified: boolean
-    ) {
-    }
-  }
+import { singleton } from 'tsyringe'
+import { LoginDBSchema } from './schema/logins.db.schema'
+
 export namespace ApplicationData {
 
     export class AppDbConfig {
@@ -23,7 +11,7 @@ export namespace ApplicationData {
         ) { }
     }
 
-    @Injectable()
+    @singleton()
     export class AppDbContext {
         public loginsDB!: Low<LoginDBSchema>
 
@@ -36,7 +24,7 @@ export namespace ApplicationData {
         }
     }
 
-    @Injectable()
+    @singleton()
     export class AppDbRepo {
         public loginsDB: Low<LoginDBSchema>
 
@@ -47,7 +35,7 @@ export namespace ApplicationData {
         }
     }
 
-    @Injectable()
+    @singleton()
     export class LoginsRepo extends ApplicationData.AppDbRepo {
         constructor(
             db: AppDbContext,

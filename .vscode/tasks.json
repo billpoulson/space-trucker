@@ -41,7 +41,7 @@
     },
     {
       "label": "ng build",
-      "dependsOn":"watch common",
+      "dependsOn": "watch common",
       "type": "shell",
       "command": "ng build @space-truckers/client",
       "problemMatcher": {
@@ -70,12 +70,48 @@
       }
     },
     {
+      "label": "watch env",
+      "type": "shell",
+      "command": "npm run generate-env -w=@space-truckers/client",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "dotenv",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*):\\s*(\\d+):\\s*(\\d+) -\\s*(error|warning)\\s*(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*tsx generate.*",
+          "endsPattern": ".*Environment file generated successfully.*"
+        },
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
       "label": "watch types",
       "type": "shell",
       "command": "npm run watch -w=@space-truckers/types",
       "isBackground": true,
+      "dependsOn": "watch env",
       "problemMatcher": {
-        "owner": "angular",
+        "owner": "tsc",
         "fileLocation": [
           "relative",
           "${workspaceFolder}"
@@ -109,9 +145,9 @@
       "type": "shell",
       "command": "npm run watch -w=@space-truckers/common",
       "isBackground": true,
-      "dependsOn":"watch types",
+      "dependsOn": "watch types",
       "problemMatcher": {
-        "owner": "angular",
+        "owner": "tsc",
         "fileLocation": [
           "relative",
           "${workspaceFolder}"

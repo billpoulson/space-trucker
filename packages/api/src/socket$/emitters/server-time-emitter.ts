@@ -1,13 +1,13 @@
 import { ConnectionAuthorizationData } from '@space-truckers/types'
-import { Injectable } from 'injection-js'
-import { ClientWebsocketRelay } from '../services/client-message.service'
+import { injectable } from 'tsyringe'
+import { ClientWebsocketReference } from '../../services/chat/client-web-socket-reference'
 
 
-@Injectable()
+@injectable()
 export class ServerTimeEmitter {
     constructor(
         public connection: ConnectionAuthorizationData,
-        public ws: ClientWebsocketRelay
+        public ws: ClientWebsocketReference
     ) {
         // interval(1000)
         //     .pipe(

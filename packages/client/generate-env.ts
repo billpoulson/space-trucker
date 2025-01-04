@@ -14,6 +14,6 @@ export const environment = {
 `
 
 // Write to environment.ts file
-fs.writeFileSync('./packages/client/src/environment.ts', envConfig)
+fs.writeFileSync('./src/environment.ts', envConfig)
 
 console.log('Environment file generated successfully!')

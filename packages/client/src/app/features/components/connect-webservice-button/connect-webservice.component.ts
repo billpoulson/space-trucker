@@ -38,7 +38,7 @@ export class ConnectWebServiceButtonComponent {
     const isConnected = await (firstValueFrom(this.socket.connectionStatus$))
 
     if (!isConnected) {
-      this.socket.connect(this.name);
+      this.socket.connect(this.name, 5000);
     } else {
       this.socket.disconnect();
     }

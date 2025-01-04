@@ -2,18 +2,20 @@
   "name": "@space-truckers/api",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "debug": "ts-node -r tsconfig-paths/register src/index.ts --inspect",
     "build": "npx tsc --build",
+    "watch": "nodemon  --exec npm run start",
+    "watch:debug": "nodemon --exec npm run debug",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon --watch src --ext ts --exec npm run start",
-    "watch:debug": "nodemon --watch src --watch ../common/**/* --watch ../types/**/* --ext ts,js --exec npm run debug"
+    "dotenv-pull": "npx dotenv-vault@latest pull",
+    "dotenv-push": "npx dotenv-vault@latest push"
   },
   "dependencies": {
     "@space-truckers/types": "^0.0.1",
     "dotenv-cli": "^8.0.0",
     "fake-indexeddb": "^6.0.0",
     "node-fetch": "^3.3.2",
-    "rxdb": "^15.39.0"
+    "tsyringe": "^4.8.0"
   }
 }

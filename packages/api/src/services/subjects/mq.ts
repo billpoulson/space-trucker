@@ -1,9 +1,14 @@
 import { convertToKebabCase, MessageConstructor, MessageData, WebsocketService } from '@space-truckers/common'
-import { Injectable } from 'injection-js'
-import { filter, map, Subject } from 'rxjs'
+import { filter, map, Observable, Subject, tap } from 'rxjs'
+import { injectable } from 'tsyringe'
 
-@Injectable()
-export class MQ extends Subject<{ type: string, data: any }> {
+@injectable()
+export class MQ extends Subject<{ type: string, uuid: string, data: any }> {
+
+  override next(value: { type: string; uuid: string; data: any; }): void {
+    super.next(value)
+  }
+
   constructor(
     private aa: WebsocketService
   ) {
@@ -14,23 +19,16 @@ export class MQ extends Subject<{ type: string, data: any }> {
     return 'type' in payload && 'data' in payload
   }
 
-  // select<TModel>(actionType: string): Observable<TModel> {
-  //   return this.pipe(
-  //     filter(({ type }) => actionType === type)
-  //   ) as Observable<TModel>
-  // }
-
   selectTypedMessage<TData>(
     MessageClass: MessageConstructor<TData, MessageData<TData>>
-  ) {
+  ): Observable<TData> {
+    let rxCount = -1;// number of messages received on this selector
     return this.pipe(
-      filter(({ type }) => {
-        return type === convertToKebabCase(MessageClass.name)
+      filter(({ type }) => type === convertToKebabCase(MessageClass.name)),
+      tap(({ uuid }) => {
+        console.log(`${rxCount++} : received message ${uuid} ${convertToKebabCase(MessageClass.name)}`)
       }),
-      map(({ type, data }) => {
-        console.log(`${type} for handler ${MessageClass.name}`)
-        return data as TData
-      })
+      map(({ data }) => data as TData)
     )
   }
 

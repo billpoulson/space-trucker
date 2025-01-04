@@ -47,3 +47,4 @@ packages/api/*.db.json
 .flaskenv*
 !.env.project
 !.env.vault
+packages/client/src/environment.ts

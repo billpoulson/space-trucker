@@ -6,6 +6,7 @@ export interface MessageData<TData> { data: TData }
 export type MessageConstructor<TArgs, TMessageType> = {
   new(data: TArgs): TMessageType // Constructor for instances
   type: string // Static property
+  uuid?: string
 }
 export class AppMessageQueue {
   mq: Observable<any>
@@ -100,9 +101,11 @@ export class WebsocketService {
   disconnect() {
     this.wsSubject.close(1000, 'user disconnected')
   }
-
+  uid = 0
   sendMessage(message: any): void {
+    message.uuid = this.uid++
     if (this.wsSubject && this.wsSubject.readyState === WebSocket.OPEN) {
+      console.log(`sending message ${message.type}`)
       this.wsSubject.send(JSON.stringify(message))
     } else {
       console.error('WebSocket is not connected')

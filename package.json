@@ -5,8 +5,9 @@
     "packages/*"
   ],
   "scripts": {
-   "prestart": "npx tsc generate-env.ts",
-   "prestart1": "node generate-env.js"
+    "dotenv-pull:all": "npm run dotenv-pull --workspaces --if-present",
+    "dotenv-pull": "npx dotenv-vault@latest pull",
+    "dotenv-push": "npx dotenv-vault@latest push"
   },
   "private": true,
   "dependencies": {
@@ -27,15 +28,15 @@
     "express": "^4.21.2",
     "express-oauth2-jwt-bearer": "^1.6.0",
     "express-ws": "^5.0.2",
-    "injection-js": "^2.4.0",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
     "lowdb": "^7.0.1",
     "pouchdb-adapter-node-websql": "^7.0.0",
     "reflect-metadata": "^0.2.2",
-    "rxdb": "^15.39.0",
     "rxjs": "~7.8.0",
+    "three": "^0.172.0",
     "tslib": "^2.3.0",
+    "tsx": "^4.19.2",
     "ws": "^8.18.0",
     "zone.js": "~0.15.0"
   },
@@ -64,5 +65,11 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "~5.6.2"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
   }
 }
