@@ -18,20 +18,20 @@ export class JWTTokenAuthenticationService {
   private getKey(header: any, callback: any) {
     this.client.getSigningKey(header.kid, (err, key: any) => {
       if (err) {
-        callback(err, null);
-        return;
+        callback(err, null)
+        return
       }
-      const signingKey = key.publicKey || key.rsaPublicKey;
-      callback(null, signingKey);
-    });
+      const signingKey = key.publicKey || key.rsaPublicKey
+      callback(null, signingKey)
+    })
   }
 
   private verifyToken(token: string): Promise<UserInfoObject> {
-    const get = this.getKey.bind(this);
+    const get = this.getKey.bind(this)
     return new Promise((resolve, reject) => {
       jwt.verify(token, get, this.options, async (err, decoded) => {
         if (err) {
-          reject('Token verification failed');
+          reject('Token verification failed')
         } else {
           await fetch(
             `https://${this.issuerDomain}/userinfo`, {
@@ -42,15 +42,28 @@ export class JWTTokenAuthenticationService {
           })
             .then(response => response.json())
             .then(data => {
-              resolve(data as any);
-            });
+              resolve(data as any)
+            })
 
         }
-      });
-    });
+      })
+    })
   }
 
-  tryAuthorizeWebsocketConnection(
+  getUserInfo(token: string): Promise<UserInfoObject> {
+    return fetch(
+      `https://${this.issuerDomain}/userinfo`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(response => response.json() as any)
+
+  }
+
+
+  tryVerifyOauthToken(
     token: string
   ) {
     return from(
@@ -58,13 +71,13 @@ export class JWTTokenAuthenticationService {
         async (resolve) => {
           await this.verifyToken(token)
             .then((val) => {
-              console.log(`Connection accepted.`);
-              resolve([true, val]);
+              console.log(`Connection accepted.`)
+              resolve([true, val])
             }).catch((reason) => {
-              console.log(`Connection rejected. : ${reason}`);
-              resolve([false, undefined]);
-            });
+              console.log(`Connection rejected. : ${reason}`)
+              resolve([false, undefined])
+            })
         })
-    );
+    )
   }
 }

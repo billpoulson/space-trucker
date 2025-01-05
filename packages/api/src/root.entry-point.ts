@@ -1,6 +1,6 @@
 import { DependencyContainer, inject, singleton } from 'tsyringe'
+import { ExpressServerContainer } from './http/express-server-container'
 import { SCOPED_CONTAINER$$ } from './ioc/injection-tokens'
-import { ExpressServerContainer } from './server/express-server-container'
 
 @singleton()
 export class RootEntryPoint {

@@ -1,21 +1,27 @@
-import { Request, Response } from 'express'
+import express from 'express'
+import { DependencyContainer } from 'tsyringe'
+import { createRequestScopedHandler } from '../../ioc/create-request-scoped-handler'
+import { EncryptionUtil } from '../../services/cryptography/encryption-util'
 
-export default () => {
-  const express = require('express')
+type PingRequest = { s: string }
+
+export default (
+  scope: DependencyContainer
+) => {
+  const requestScopedAction = createRequestScopedHandler(scope, (scope, req, res) => scope)
+  const a = new EncryptionUtil()
   const router = express.Router()
 
   router.use((req, res, next) => {
-    debugger
-    req.customData = {
-      message: 'Hello from middleware',
-      timestamp: new Date(),
-    };
-    next(); // Pass control to the next middleware/handler
-  });
-
-  router.get('/getBalance', async (req: Request, res: Response) => {
-    res.send('$1000.00')
+    next()
   })
+  router.post('/balance', requestScopedAction<PingRequest>(
+    (scope, req, res, params, body) => {
+      res.send(JSON.stringify({
+        enc: a.encryptAndEncode('$100'),
+        org: '$100'
+      }))
+    }))
 
   // Define routes for the "users" module
   router.get('/', (req, res) => {

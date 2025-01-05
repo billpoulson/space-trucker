@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { firstValueFrom, tap } from 'rxjs';
-import { AuthroizedWebSocketService } from '../../../core/services/sockets/authorized-web-socket.service';
-import { SetUserNameDialogComponent } from '../chat-panel/set-user-name-dialog/set-user-name-dialog.component';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
+import { firstValueFrom, tap } from 'rxjs'
+import { AuthroizedWebSocketService } from '../../../core/services/sockets/authorized-web-socket.service'
+import { SetUserNameDialogComponent } from '../chat-panel/set-user-name-dialog/set-user-name-dialog.component'
+
 
 @Component({
   selector: 'app-connect-webservice-button',
@@ -17,7 +18,9 @@ import { SetUserNameDialogComponent } from '../chat-panel/set-user-name-dialog/s
 })
 export class ConnectWebServiceButtonComponent {
   isConnected = false;
-  name = ''
+  static USERNAME = ''
+  public get name() { return ConnectWebServiceButtonComponent.USERNAME }
+  public set name(value) { ConnectWebServiceButtonComponent.USERNAME = value }
 
   constructor(
     public socket: AuthroizedWebSocketService,
@@ -25,24 +28,24 @@ export class ConnectWebServiceButtonComponent {
     private dialog: MatDialog
   ) {
 
-    socket.connectionStatus$.pipe(tap(st => {
-      this.isConnected = st;
-      this.cdr.markForCheck()
-    })).subscribe()
+    socket.connectionStatus$
+      .pipe(tap(st => {
+        this.isConnected = st
+        this.cdr.markForCheck()
+      })).subscribe()
 
   }
 
   toggleConnection = async () => {
 
-    await this.ensureUsernameIsProvided();
+    await this.ensureUsernameIsProvided()
     const isConnected = await (firstValueFrom(this.socket.connectionStatus$))
 
     if (!isConnected) {
-      this.socket.connect(this.name, 5000);
+      this.socket.connect(this.name, 5000)
     } else {
-      this.socket.disconnect();
+      this.socket.disconnect()
     }
-    return;
 
   }
 
@@ -51,7 +54,7 @@ export class ConnectWebServiceButtonComponent {
 
   private async ensureUsernameIsProvided() {
     if (this.name?.length == 0) {
-      this.name = await this.acquireUsername();
+      this.name = await this.acquireUsername()
     }
   }
 
@@ -59,7 +62,7 @@ export class ConnectWebServiceButtonComponent {
     return await firstValueFrom(
       this.dialog.open(SetUserNameDialogComponent, {
         data: {},
-      }).afterClosed());
+      }).afterClosed())
   }
 }
 

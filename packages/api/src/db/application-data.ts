@@ -1,6 +1,6 @@
 import { UserInfoObject } from '@space-truckers/types'
 import { Low } from 'lowdb/lib/core/Low'
-import { singleton } from 'tsyringe'
+import { injectable, singleton } from 'tsyringe'
 import { LoginDBSchema } from './schema/logins.db.schema'
 
 export namespace ApplicationData {
@@ -35,7 +35,7 @@ export namespace ApplicationData {
         }
     }
 
-    @singleton()
+    @injectable()
     export class LoginsRepo extends ApplicationData.AppDbRepo {
         constructor(
             db: AppDbContext,

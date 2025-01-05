@@ -20,7 +20,7 @@ export class ClientChatService {
   clientChatMessage: TypeMessagePipelineInterface<ClientChatMessageData>
 
   private _state$ = new BehaviorSubject<ChatServiceState>({
-    channels: ['GLOBAL']
+    channels: ['GLOBAL', 'TEST']
   })
   state$ = this._state$.asObservable()
 

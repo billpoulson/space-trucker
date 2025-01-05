@@ -78,7 +78,7 @@ export class WebSocketServer implements AppController {
 
     // try to authorize the user, and return their profile
     const container = await firstValueFrom(
-      this.jwtAuthService.tryAuthorizeWebsocketConnection(token)
+      this.jwtAuthService.tryVerifyOauthToken(token)
         .pipe(
           isTruthy(([allow]) => allow),
           isTruthy(([_, profile]) => profile),

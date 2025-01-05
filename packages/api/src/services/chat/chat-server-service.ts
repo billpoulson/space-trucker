@@ -30,7 +30,6 @@ export class ChatServerService {
           )
         )))
       .subscribe()
-
   }
 
   register(
@@ -46,7 +45,6 @@ export class ChatServerService {
     this.users = this.users
       .filter(({ ws }) => ws.readyState === WebSocket.OPEN)
     const user = this.users.find((user) => user.name == name)!
-
   }
 
   deregister(name: string) {
