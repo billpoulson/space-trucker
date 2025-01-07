@@ -3,7 +3,7 @@ import { ClientChatMessage, ConnectionAuthorizationData, SetUsernameError, SetUs
 import { merge, tap } from 'rxjs'
 import { injectable } from 'tsyringe'
 import WebSocket from 'ws'
-import { MQ } from '../subjects/mq'
+import { MQ } from '../../../../common/src/lib/subjects/mq'
 import { ChatServerService } from './chat-server-service'
 import { ClientWebsocketReference } from './client-web-socket-reference'
 

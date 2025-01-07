@@ -1,19 +1,18 @@
 import { UserInfoObject } from '@space-truckers/types'
 import { DependencyContainer } from 'tsyringe'
-import { Ship } from './ship'
-import { ShipLoaderService } from './ship-loader-service'
-import { ShipNavComputer } from './ship-nav-computer'
-import { ShipPosition } from './ship-position'
+import { LocationCoordinates } from '../cosmic-volume/location-coordinates'
+import { Ship } from './model/ship'
+import { ShipNavComputer } from './model/ship-nav-computer'
 
-export async function createShip(scope: DependencyContainer) {
-  const c = scope
+export async function createShip(
+  container: DependencyContainer
+) {
+  const childContainer = container
     .createChildContainer()
     .registerInstance(UserInfoObject, {} as any)
-    .registerSingleton(ShipLoaderService)
-    .registerSingleton(ShipPosition)
+    .registerSingleton(LocationCoordinates)
     .registerSingleton(ShipNavComputer)
     .registerSingleton(Ship)
 
-
-  return c.resolve(Ship)
+  return childContainer.resolve(Ship)
 }

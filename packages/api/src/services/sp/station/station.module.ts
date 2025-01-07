@@ -1,9 +1,9 @@
 import { Vector3, Vector3Boundary } from '@space-truckers/common'
 import { DependencyContainer, inject } from 'tsyringe'
 import { SCOPED_CONTAINER$$ } from '../../../ioc/injection-tokens'
-import { ShipPosition } from '../ship/ship-position'
-import { seedLocations, testBoundary } from '../util'
-import { Station } from './station'
+import { LocationCoordinates } from '../cosmic-volume/location-coordinates'
+import { seedLocations, testBoundary } from '../cosmic-volume/seed'
+import { Station } from './model/station'
 export class stationMgr {
   stations: Map<Vector3, Station> = new Map()
   constructor(
@@ -52,7 +52,7 @@ export class stationMgr {
   ) {
     const r = scope
       .createChildContainer()
-      .registerSingleton(ShipPosition)
+      .registerSingleton(LocationCoordinates)
       .registerSingleton(Station)
       .resolve(Station)
     r.position = stationLocation

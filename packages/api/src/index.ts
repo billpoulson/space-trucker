@@ -3,11 +3,10 @@ import 'reflect-metadata'
 
 import path from 'path'
 import { container } from 'tsyringe'
-import { ApplicationData } from './db/application-data'
-import { registerOauth2Module } from './http/oauth/create-auth-module'
+import { AppDbConfig } from './db/core/config'
 import { SCOPED_CONTAINER$$, STATIC_CONTENT_PATH$$ } from './ioc/injection-tokens'
 import { RootEntryPoint } from './root.entry-point'
-const { AppDbConfig } = ApplicationData
+import { registerOauth2Module } from './server/http/oauth/create-auth-module'
 configDotenv()
 
 registerOauth2Module(container)

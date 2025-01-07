@@ -1,7 +1,7 @@
 import { DependencyContainer, inject, singleton } from 'tsyringe'
-import { ExpressServerContainer } from './http/express-server-container'
 import { SCOPED_CONTAINER$$ } from './ioc/injection-tokens'
-import { LoadsModule } from './services/loads/loads.module'
+import { ExpressServerContainer } from './server/http/express-server-container'
+import { LoadsModule } from './services/sp/loads/loads.module'
 import { createShip } from './services/sp/ship/ship.module'
 import { stationMgr } from './services/sp/station/station.module'
 
