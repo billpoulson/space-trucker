@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core'
-import { toKeysAndData } from '@space-truckers/common'
+import { calculatePercent, toKeysAndData } from '@space-truckers/common'
 import { BehaviorSubject, concatMap, firstValueFrom, from, map, share } from 'rxjs'
-import { ClockSignal } from '../../subjects/clock-signal'
-import { LoadDefinitionData } from '../../system/data/load'
-import { calculatePercent } from '../../util/math.extensions'
-import { EntropyService } from '../_/entropy.service'
+
+import { LoadDefinitionData } from '@space-truckers/types'
+import { singleton } from 'tsyringe'
+import { EntropyService } from '../gamify/entropy.service'
+import { ClockSignal } from './clock-signal'
 export type LoadDB = { [key: string]: LoadDefinitionData }
-@Injectable({
-  providedIn: 'root',
-})
+
+@singleton()
 export class LoadsService {
   private nextId = 0;
   private _availableLoads$ = new BehaviorSubject<LoadDB>({})
@@ -31,7 +30,7 @@ export class LoadsService {
     private clock: ClockSignal,
     private rng: EntropyService
   ) {
-    this._availableLoads$.subscribe(console.log)
+    // this._availableLoads$.subscribe(console.log)
     this.updateLoadProgressOnTick()
   }
 
@@ -61,7 +60,7 @@ export class LoadsService {
     })
 
     if (isCompleted) {
-      console.log('Load Delivered Successfully', updatedLoad)
+      // console.log('Load Delivered Successfully', updatedLoad)
     }
 
     return updatedLoad
@@ -79,7 +78,7 @@ export class LoadsService {
     load.mass = this.rng.generateRandomNumber(100, 100000000000)
     load.payout = this.rng.generateRandomNumber(100, 100000000000)
 
-    this.updateLoad(load.key, load)
+    return this.updateLoad(load.key, load)
 
   }
 

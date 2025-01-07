@@ -1,19 +1,15 @@
 import { Component, HostListener, OnInit } from '@angular/core'
+import { getRandomInclusive, newGUID, Vector3, Vector3Boundary } from '@space-truckers/common'
 import { Dictionary } from '@space-truckers/types'
-import * as THREE from 'three'
-import { Mesh } from 'three'
-import { getRandomInclusive } from '../../../core/numerics/random/getRandomInclusive'
-import { Vector3 } from '../../../core/numerics/vector3'
-import { Vector3Boundary } from '../../../core/numerics/vector3-boundary'
-import { newGUID } from '../../../core/uuid'
+import THREE, { Camera, Mesh, Scene } from 'three'
 @Component({
   selector: 'app-StarMapViewPort',
   templateUrl: './StarMapViewPort.component.html',
   styleUrls: ['./StarMapViewPort.component.scss']
 })
 export class StarMapViewPortComponent implements OnInit {
-  scene = new THREE.Scene()
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000000)
+  scene: Scene = new THREE.Scene()
+  camera: Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000000)
   // THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,1,5000)
   renderer = new THREE.WebGLRenderer()
   cubeSize = 10000

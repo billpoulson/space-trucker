@@ -39,7 +39,6 @@ export class UserSocketChat {
             mq.createTypedMessageInterface(SetUsernameSuccess)
               .send({ message: `name updated` })
             console.log('name updated')
-
           }
         })),
 

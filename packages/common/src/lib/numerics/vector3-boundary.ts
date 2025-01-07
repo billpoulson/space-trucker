@@ -1,4 +1,4 @@
-import { Vector3 } from '@gpx-view/system/numerics/vector3'
+import { Vector3 } from './vector3'
 
 
 

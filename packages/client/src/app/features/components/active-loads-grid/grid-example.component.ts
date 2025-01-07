@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core'
+import { LoadDefinitionData } from '@space-truckers/types'
 import type { ColDef, GridApi, GridReadyEvent, Theme } from 'ag-grid-community'; // Column Definition Type Interface
-import { THEME_TOKEN } from '../../../config/theme.config';
-import { LoadsService } from '../../../core/services/loads/loads.service';
-import { LoadDefinitionData } from '../../../core/system/data/load';
+import { THEME_TOKEN } from '../../../config/theme.config'
+// import { LoadsService } from '../../../core/services/loads/loads.service'
 
 
 @Component({
@@ -17,17 +17,17 @@ export class ActiveLoadsGridComponent {
   private gridApi!: GridApi;
   constructor(
     @Inject(THEME_TOKEN) public theme: Theme<any>,
-    ls: LoadsService,
+    // ls: LoadsService,
     private cdr: ChangeDetectorRef
   ) {
 
-    setInterval(async () => {
-      const { keys, data } = ls.getEnumerableDB()
-      this.datasource = keys
-        .reduce((acc, curr) => { return [...acc, data[curr]] }, [] as Array<LoadDefinitionData>)
-        .sort(newFunction())
-      this.cdr.detectChanges()
-    }, 1000);
+    // setInterval(async () => {
+    //   const { keys, data } = ls.getEnumerableDB()
+    //   this.datasource = keys
+    //     .reduce((acc, curr) => { return [...acc, data[curr]] }, [] as Array<LoadDefinitionData>)
+    //     .sort(newFunction())
+    //   this.cdr.detectChanges()
+    // }, 1000);
   }
 
   onGridReady(params: GridReadyEvent) {

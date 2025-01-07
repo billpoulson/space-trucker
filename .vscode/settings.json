@@ -10,7 +10,7 @@
     "editor.codeActionsOnSave": {
         "source.organizeImports": "explicit"
     },
-    "editor.wordWrapColumn": 100,
+    "editor.wordWrapColumn": 80,
     "editor.wordWrap": "wordWrapColumn",
     "css.customData": [
         ".vscode/tailwind.json"

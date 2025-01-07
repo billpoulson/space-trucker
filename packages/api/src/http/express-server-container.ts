@@ -32,7 +32,7 @@ export class ExpressServerContainer {
     @inject(AUTH_ISSUER_DOMAIN$$) issuerDomain: string,
     @inject(STATIC_CONTENT_PATH$$) staticContentPath: string,
   ) {
-
+    console.info(this.constructor.name)
     const oauth2Middleware = auth({
       audience,
       issuerBaseURL: `https://${issuerDomain}/`,
