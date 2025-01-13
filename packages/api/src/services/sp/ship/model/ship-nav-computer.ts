@@ -83,13 +83,13 @@ export class ShipNavComputer {
           this.physicsState.updateRotation(this.destination!)
         }
 
-        console.log(`update // ${this.uuid} | total-deliveries // ${this.deliveryCt}`)
-        console.log(`flight plan // ${this.data.value.path}`)
-        console.log(`Ship Destination: (${this.destination!.x.toFixed(2)}, ${this.destination!.y.toFixed(2)}, ${this.destination!.z.toFixed(2)})`)
-        console.log(`${this.flightPlanBuffer.length} jump points remain`)
-        console.log(`Distance To: (${this.distanceRemaining.toFixed(2)})`)
+        // console.log(`update // ${this.uuid} | total-deliveries // ${this.deliveryCt}`)
+        // console.log(`flight plan // ${this.data.value.path}`)
+        // console.log(`Ship Destination: (${this.destination!.x.toFixed(2)}, ${this.destination!.y.toFixed(2)}, ${this.destination!.z.toFixed(2)})`)
+        // console.log(`${this.flightPlanBuffer.length} jump points remain`)
+        // console.log(`Distance To: (${this.distanceRemaining.toFixed(2)})`)
 
-        console.log(this.physicsState.toString())
+        // console.log(this.physicsState.toString())
       }
     }
 
@@ -147,7 +147,7 @@ export class ShipNavComputer {
         ...this.data.value,
         timeToArrivalDisplay: message
       })
-      console.log(this.data.value.timeToArrivalDisplay, this.uuid)
+      // console.log(this.data.value.timeToArrivalDisplay, this.uuid)
     }
 
   }

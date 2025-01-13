@@ -24,14 +24,14 @@ export abstract class ModalActivator<TData = any> implements OnInit {
   ngOnInit(): void {
     this.route.data
       .pipe(
-        take(1), 
-        first(x => this.activatedByRoute)
+        take(1),
       )
       .subscribe(({
         data,
         config
       }) => {
-        this.activate(data, config) // Error if abstractMethod is not implemented in a derived class
+        if (this.activatedByRoute)
+          this.activate(data, config) // Error if abstractMethod is not implemented in a derived class
       })
   }
 

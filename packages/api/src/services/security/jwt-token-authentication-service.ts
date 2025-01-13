@@ -2,7 +2,7 @@ import { UserInfoObject } from '@space-truckers/types'
 import jwt from 'jsonwebtoken'
 import { JwksClient } from 'jwks-rsa'
 import fetch from 'node-fetch'
-import { catchError, from, map, Observable, of } from 'rxjs'
+import { from, map, Observable } from 'rxjs'
 import { inject, singleton } from 'tsyringe'
 import { AUTH_ISSUER_DOMAIN$$ } from '../../ioc/security/injection-tokens'
 import { JWTVerifyOptions } from './oauth/jwt-verify-options'
@@ -70,12 +70,7 @@ export class JWTTokenAuthenticationService {
       .pipe(
         map(val => {
           console.log(`Connection accepted.`)
-          return [false, val] as TokenVerificationResponse
-        }),
-        catchError((err) => {
-          console.log(`Connection rejected. : ${err}`)
-          console.error(err)
-          return of<TokenVerificationResponse>([false, undefined])
+          return [true, val] as TokenVerificationResponse
         })
       )
   }

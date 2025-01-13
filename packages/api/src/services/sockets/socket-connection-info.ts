@@ -4,13 +4,13 @@ import { Subject, lastValueFrom } from 'rxjs'
 import WebSocket from 'ws'
 
 
-export class SocketConnectionInfo {
+export class ClientWebsocketConnectionInstance {
   _websocketClose$ = new Subject<number>()
 
   static create = (
     profile: UserInfoObject,
     socket: WebSocket
-  ) => new SocketConnectionInfo(profile, socket, newUUID())
+  ) => new ClientWebsocketConnectionInstance(profile, socket, newUUID())
 
   events: {
     socketClosed$: Subject<number>,

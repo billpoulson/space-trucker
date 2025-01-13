@@ -9,7 +9,6 @@ export class stationMgr {
   constructor(
     @inject(SCOPED_CONTAINER$$) private scope: DependencyContainer
   ) {
-
     seedLocations(testBoundary).forEach(location => {
       this.stations.set(location, this.createStation(scope, location))
     })
@@ -46,16 +45,18 @@ export class stationMgr {
         Vector3.isWithinBoundary(scanRange, key)
       )
   }
+
   createStation(
     scope: DependencyContainer,
     stationLocation: Vector3,
   ) {
-    const r = scope
+    const station = scope
       .createChildContainer()
       .registerSingleton(LocationCoordinates)
       .registerSingleton(Station)
       .resolve(Station)
-    r.position = stationLocation
-    return r
+    station.position = stationLocation
+    return station
   }
+
 }

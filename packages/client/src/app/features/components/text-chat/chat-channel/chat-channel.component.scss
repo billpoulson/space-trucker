@@ -4,12 +4,17 @@
     @apply flex;
   }
   &__user-list {
-    @apply bg-slate-500 w-52;
+    @apply bg-slate-500 w-52 min-w-32;
   }
   &__user-name {
     @apply px-3 overflow-hidden text-ellipsis whitespace-nowrap;
   }
   &__channel-messages {
+    scrollbar-width: thin; /* Makes scrollbar thinner */
+    scrollbar-color: #888 #151316; /* thumb color and track color */
+    max-height: 300px;
+    overflow-y: scroll;
     @apply bg-slate-400 px-3 grow;
+    overflow-x: hidden
   }
 }

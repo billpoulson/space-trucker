@@ -48,3 +48,5 @@ packages/api/*.db.json
 !.env.project
 !.env.vault
 packages/client/src/environment.ts
+
+packages/client/public/Tornado_Escort_Carrier.stl

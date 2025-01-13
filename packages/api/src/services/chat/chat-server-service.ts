@@ -1,5 +1,5 @@
 import { convertToKebabCase } from '@space-truckers/common'
-import { ClientChatMessage, ClientChatMessageData, PushChannelUsersMessage } from '@space-truckers/types'
+import { ClientChatMessage, ClientChatMessageData, ClientChatMessageSenderFragment, PushChannelUsersMessage } from '@space-truckers/types'
 
 import { ChatUserData } from '@space-truckers/types'
 import { concatMap, filter, from, merge, Subject, tap } from 'rxjs'
@@ -9,7 +9,7 @@ import WebSocket from 'ws'
 @singleton()
 export class ChatServerService {
 
-  channels = ['GLOBAL', 'TEST']
+  channels = ['GLOBAL']
 
   stream = new Subject<ClientChatMessageData>
   clients = new Map<string, ChatUserData>()
@@ -19,9 +19,11 @@ export class ChatServerService {
       this.stream.pipe(
         concatMap((message) => from(this.clients.entries())
           .pipe(
-            filter(([, user]) => user.name !== message.user),
-            filter(([, user]) => user.isSubscribedToMessage(message)),
-            tap(([, { send }]) => {
+            // filter(([, user]) => user.connectionId !== message.connectionId),
+            filter(([, client]) => client.isSubscribedToMessage(message)),
+            tap(([, client]) => {
+              const { send, connectionId } = client
+              message.isSender = connectionId == message.connectionId
               send({
                 type: convertToKebabCase(ClientChatMessage.name),
                 data: message
@@ -33,15 +35,20 @@ export class ChatServerService {
   }
 
   register(
-    name: string,
+    connectionId: string,
+    user: string,
     ws: WebSocket,
     sendJson: (message: any) => void
-  ) {
-    const joinChannels = ['GLOBAL', 'TEST']
-    console.info(`${name}: connected`)
-    this.clients.set(name, new ChatUserData(
-      name, ws, sendJson, joinChannels
-    ))
+  ): ClientChatMessageSenderFragment {
+    const joinChannels = ['GLOBAL']
+    console.info(`${ChatServerService.name}: ${user}: connected`)
+    const newClient = new ChatUserData(
+      connectionId, user, ws, sendJson, joinChannels
+    )
+    this.clients.set(connectionId, newClient)
+    this.pushChannelUsersUpdate(newClient)
+
+    return { connectionId, user }
   }
 
   deregister(clientId: string) {
@@ -51,9 +58,16 @@ export class ChatServerService {
   }
 
   pushChannelUsersUpdate(initByUser: ChatUserData) {
+    if (initByUser === undefined) {
+      debugger
+    }
     Array.from(this.clients.entries())
-      .filter(([, user]) =>
-        user.channelSubscriptions.some(sub => initByUser.channelSubscriptions.includes(sub))
+      .filter(([, user]) => {
+        if (user === undefined) {
+          debugger
+        }
+        return user.channelSubscriptions.some(sub => initByUser.channelSubscriptions.includes(sub))
+      }
       ) // only users subscribed to the same channel as the initByUser
       .map(([key, user], _,) => /* build map of users in channels*/
         [user, user.channelSubscriptions
@@ -62,7 +76,7 @@ export class ChatServerService {
             [channel]: Array
               .from(this.clients.entries())
               .filter(([, peer]) => peer.channelSubscriptions.includes(channel))
-              .map(([, { name }]) => name)
+              .map(([, { user: username }]) => username)
           }), {})] as [ChatUserData, any])
       .forEach(([{ send }, data]) => {
         send({
@@ -72,11 +86,12 @@ export class ChatServerService {
       })
   }
 
-  updateUsername(oldName: string, newName: string) {
-    const aa = this.clients.get(oldName)!
-    aa.name = newName
+  updateUsername(connectionId: string, newName: string): ClientChatMessageSenderFragment {
+    const client = this.clients.get(connectionId)!
+    client.user = newName
 
-    this.pushChannelUsersUpdate(aa)
+    this.pushChannelUsersUpdate(client)
+    return client
   }
 
   isUsernameInUse(checkName: string) {

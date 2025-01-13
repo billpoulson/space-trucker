@@ -8,7 +8,7 @@ export const processStream = async (
   let buffer = ''
 
   return new Promise((resolve, reject) => {
-    stream.on('data', (chunk: Buffer) => {
+    stream.on('data', (chunk: any) => {
       buffer += decoder.decode(chunk, { stream: true })
 
       let boundary = buffer.lastIndexOf('\n')

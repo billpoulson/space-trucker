@@ -26,7 +26,6 @@ import { PagesModule } from './features/pages/pages.module'
 })
 export class AppComponent implements OnInit {
   isLoading$: Observable<boolean>
-  fullUrl!: string
   constructor(
     public authService: AuthService,
     private ux: UX,
@@ -35,9 +34,16 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    // this.authService.logout({
+    //   logoutParams: {
+    //     returnTo: window.location.origin, // Redirect URL after logout
+    //   },
+    // })
+
     await this.ux.withLogin$()
 
-    
+
   }
 
   title = 'space-trucker';

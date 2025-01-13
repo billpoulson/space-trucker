@@ -1,8 +1,9 @@
 import { injectable } from 'tsyringe'
 import { ChatServerService } from '../../services/chat/chat-server-service'
-import { UserSocketChat, UserSocketChatPrompt } from '../../services/chat/user-socket-chat'
+import { UserSocketChat } from '../../services/chat/user-socket-chat'
+import { UserSocketChatPrompt } from '../../services/chat/user-socket-chat-prompt'
 import { P2PConnection } from '../../services/p2p/p2p-connection'
-import { AuthorizationResponseEmitter } from './emitters/authorization-response-emitter'
+import { AuthorizationResponseEmitter } from '../../services/sockets/hub/emitters/authorization-response-emitter'
 
 @injectable()
 export class ClientWebsocketEntryPoint {

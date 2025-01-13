@@ -12,7 +12,7 @@ export class OllamaService {
   constructor({ baseUrl }: OllamaServiceSettings) {
     this.api = axios.create({
       baseURL: baseUrl,
-      timeout: 5000,
+      // timeout: 5000,
       headers: {
         'Content-Type': 'application/json',
       },

@@ -2,10 +2,11 @@ import { filter, map, Observable, Subject, tap } from 'rxjs'
 import { injectable } from 'tsyringe'
 import { MessageConstructor, MessageData, WebsocketService } from '../mesh'
 import { convertToKebabCase } from '../utils'
+import { newUUID } from '../uuid'
 
 @injectable()
 export class MQ extends Subject<{ type: string, uuid: string, data: any }> {
-
+  mquuid = newUUID()
   override next(value: { type: string; uuid: string; data: any }): void {
     super.next(value)
   }
@@ -21,13 +22,15 @@ export class MQ extends Subject<{ type: string, uuid: string, data: any }> {
   }
 
   selectTypedMessage<TData>(
-    MessageClass: MessageConstructor<TData, MessageData<TData>>
+    MessageClass: MessageConstructor<TData, MessageData<TData>>,
   ): Observable<TData> {
+    const usage = newUUID()
+
     let rxCount = -1// number of messages received on this selector
     return this.pipe(
       filter(({ type }) => type === convertToKebabCase(MessageClass.name)),
       tap(({ uuid }) => {
-        console.log(`${rxCount++} : received message ${uuid} ${convertToKebabCase(MessageClass.name)}`)
+        console.log(`${this.mquuid}/${usage}/${convertToKebabCase(MessageClass.name)}/${uuid} `)
       }),
       map(({ data }) => data as TData)
     )
@@ -41,7 +44,7 @@ export class MQ extends Subject<{ type: string, uuid: string, data: any }> {
     return aa.pipe(
       filter(({ type }) => type === convertToKebabCase(MessageClass.name)),
       tap(({ uuid }) => {
-        console.log(`${rxCount++} : received message ${uuid} ${convertToKebabCase(MessageClass.name)}`)
+        console.log(`${rxCount++} : received inner message ${uuid} ${convertToKebabCase(MessageClass.name)}`)
       }),
       map(({ data }) => data as TNested)
     )

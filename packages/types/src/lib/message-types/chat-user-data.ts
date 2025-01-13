@@ -1,7 +1,8 @@
 
 export class ChatUserData {
     constructor(
-        public name: string,
+        public connectionId: string,
+        public user: string,
         public ws: any,
         public send: (message: any) => void,
         public channelSubscriptions: Array<string>,

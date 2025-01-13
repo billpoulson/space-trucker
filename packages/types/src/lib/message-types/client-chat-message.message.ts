@@ -1,7 +1,13 @@
 
+export type ClientChatMessageSenderFragment = {
+  user: string
+  connectionId: string,
+}
 export type ClientChatMessageData = {
+  isSender: boolean
   channel: string
   user: string
+  connectionId: string,
   message: string
   timestamp: number
 }

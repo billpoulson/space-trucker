@@ -1,10 +1,10 @@
-import { completeSubject } from '@space-truckers/common'
+import { completeSubject, MQ } from '@space-truckers/common'
 import { ConnectionAuthorizationData } from '@space-truckers/types'
 import { injectable } from 'tsyringe'
 import WebSocket from 'ws'
-import { MQ } from '../../../../common/src/lib/subjects/mq'
 import { ClientWebsocketReference } from '../chat/client-web-socket-reference'
-import { P2PService, SocketServiceConnection } from './p2p-service'
+import { SocketServiceConnection } from '../sockets/socket-service-connection'
+import { P2PService } from './p2p-service'
 
 
 @injectable()

@@ -1,6 +1,6 @@
 mat-tab-group {
   mat-tab-body {
-    mat-card:first-child {
+    mat-card:first-child.tab-card {
       @apply rounded-t-none border-t-0;
     }
   }

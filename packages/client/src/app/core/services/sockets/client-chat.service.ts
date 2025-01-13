@@ -20,7 +20,7 @@ export class ClientChatService {
   clientChatMessage: TypeMessagePipelineInterface<ClientChatMessageData>
 
   private _state$ = new BehaviorSubject<ChatServiceState>({
-    channels: ['GLOBAL', 'TEST']
+    channels: ['GLOBAL']
   })
   state$ = this._state$.asObservable()
 
@@ -68,18 +68,24 @@ export class ClientChatService {
       .send({
         channel,
         user: SENDER,
+        connectionId: SENDER,
+        isSender: false,
         message,
         ...unixTimestamp()
       })
   }
 
-  getChannelMessages(channel: string, last = 10) {
+  getChannelMessages2(channel: string, last = 10) {
     return this.messageLog
       .filter(t => t.channel === channel)
       .slice(-1 * last)
       .map(t => `${new Date(t.timestamp).toLocaleTimeString()} | ${t.user} > ${t.message}`)
   }
-
+  getChannelMessages(channel: string, last = 10) {
+    return this.messageLog
+      .filter(t => t.channel === channel)
+      .slice(-1 * last)
+  }
   subscribeToChannelUsers(
     channel: string
   ) {

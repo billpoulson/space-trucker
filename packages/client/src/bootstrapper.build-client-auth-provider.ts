@@ -6,7 +6,7 @@ export function buildClientAuth0Provider() {
     domain: environment.auth_issuer,
     clientId: environment.auth_client_id as string,
     authorizationParams: {
-      redirect_uri: window.location.origin + environment.auth_callback_uri,
+      redirect_uri: window.location.origin ,
       audience: environment.auth_audience,
     },
     httpInterceptor: {

@@ -2,14 +2,15 @@ import { MQ, newUUID, WebsocketService } from '@space-truckers/common'
 import { ConnectionAuthorizationData, UserInfoObject } from '@space-truckers/types'
 import { DependencyContainer } from 'tsyringe'
 import WebSocket from 'ws'
-import { WSTOKEN_SEND_FN$$ } from '../../ioc/injection-tokens'
-import { UserSocketChat, UserSocketChatPrompt } from '../../services/chat/user-socket-chat'
-import { ClientWebsocketEntryPoint } from './client-websocket.entry-point'
-import { SocketConnectionInfo } from './socket-connection-info'
+import { ClientWebsocketEntryPoint } from '../../server/socket$/client-websocket.entry-point'
+import { UserSocketChat, } from '../../services/chat/user-socket-chat'
+import { UserSocketChatPrompt } from '../../services/chat/user-socket-chat-prompt'
+import { ClientWebsocketConnectionInstance } from '../../services/sockets/socket-connection-info'
+import { WSTOKEN_SEND_FN$$ } from '../injection-tokens'
 
 export function createClientScope(
   parentScope: DependencyContainer,
-  connection: SocketConnectionInfo
+  connection: ClientWebsocketConnectionInstance
 ) {
   const { connectionId, socket, profile } = connection
 
@@ -23,7 +24,7 @@ export function createClientScope(
     .registerSingleton(UserSocketChat)
     .registerSingleton(UserSocketChatPrompt)
     .registerSingleton(ClientWebsocketEntryPoint)
-    .register(SocketConnectionInfo, { useValue: connection })
+    .register(ClientWebsocketConnectionInstance, { useValue: connection })
     .register(ConnectionAuthorizationData, { useValue: { connectionId } })
     .register(WebSocket, { useValue: socket })
     .register(UserInfoObject, { useValue: profile })

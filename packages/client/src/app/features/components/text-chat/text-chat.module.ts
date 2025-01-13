@@ -7,6 +7,7 @@ import { SharedUIComponentsModule } from '../shared/shared.ui.module'
 import { ChannelListItemComponent } from './channel-list.modal/channel-list-item/channel-list-item.component'
 import { ChannelListModalActivator, ChannelListModalComponent } from './channel-list.modal/channel-list.modal.component'
 import { ChatChannelComponent } from './chat-channel/chat-channel.component'
+import { ChatMessageComponent } from './chat-channel/chat-message/chat-message.component'
 import { ChatPanelComponent } from './chat-panel.component'
 import { NotConnectedComponent } from './not-connected/not-connected.component'
 import { SetUserNameDialogComponent } from './set-user-name-dialog/set-user-name-dialog.component'
@@ -18,7 +19,8 @@ const components = [
   SetUserNameDialogComponent,
   ChannelListModalComponent,
   ChannelListItemComponent,
-  ChannelListModalActivator
+  ChannelListModalActivator,
+  ChatMessageComponent
 ]
 
 @NgModule({

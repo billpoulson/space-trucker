@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
 import { AuthService } from '@auth0/auth0-angular'
-import { convertToKebabCase, forwardTo, isTruthy } from '@space-truckers/common'
-import { SetUsernameMessage } from '@space-truckers/types'
+import { forwardTo, isTruthy } from '@space-truckers/common'
 import { BehaviorSubject, catchError, concatMap, EMPTY, first, firstValueFrom, from, interval, map, of, scan, Subject, takeUntil, tap, timeout } from 'rxjs'
 import { SocketConnectionStatus } from '../../subjects/socket-connection-status'
 import { NotificationService } from '../_/notification.service'
@@ -103,7 +102,7 @@ export class AuthroizedWebSocketService {
           this.notifyOf.success('Socket Connected', 'OK')
           // push the users preferred name to the server
           // this.amq.createTypedMessageInterface(SetUsernameMessage).send(username)
-          this.websocketService.sendMessage({ type: convertToKebabCase(SetUsernameMessage.name), data: username })
+          // this.websocketService.sendMessage({ type: convertToKebabCase(SetUsernameMessage.name), data: username })
         })
       )
     )

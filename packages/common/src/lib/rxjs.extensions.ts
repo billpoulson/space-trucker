@@ -25,7 +25,8 @@ export function isTruthy<T>(selector?: (data: T) => any) {
     filter<T>((value) => {
       const result = selector!(value)
       if (Array.isArray(result)) {
-        return result.some(z => ![false, undefined, null].indexOf(z))
+        const isT = result.some(z => [false, undefined, null].indexOf(z) == -1)
+        return isT
       }
       return !!result
     })

@@ -1,22 +1,12 @@
 import { P2PServiceMessageWrapper, WebRTC_ICE_Request, WebRTCConnectionAnswer, WebRTCConnectionOffer } from '@space-truckers/types'
 
-import { completeSubject, forwardTo, MQ } from '@space-truckers/common'
+import { forwardTo } from '@space-truckers/common'
 import { concatMap, filter, finalize, from, map, merge, Subject, takeUntil, tap } from 'rxjs'
 import { singleton } from 'tsyringe'
+import { FromConnection } from '../sockets/from-connection'
+import { SocketServiceConnection } from '../sockets/socket-service-connection'
 
 type ServiceMessages = WebRTCConnectionOffer | WebRTC_ICE_Request | WebRTCConnectionAnswer
-interface FromConnection { _clientId: string }
-
-export class SocketServiceConnection {
-  public disconnectSignal$ = new Subject<void>
-
-  constructor(
-    public name: string,
-    public ws: any,
-    public peerMQ: MQ,// message queue from client to server
-    public send: (message: any) => void,
-  ) { }
-};
 
 @singleton()
 export class P2PService {
@@ -33,7 +23,7 @@ export class P2PService {
     return this.stream.pipe(
       concatMap((message) => from(this.clients.entries())
         .pipe(
-          filter(([_, user]) => user.name !== message._clientId),
+          filter(([_, user]) => user.connectionId !== message.sourceConnectionId),
           tap(([_, { send }]) => { send(message) })
         )
       ))
@@ -42,20 +32,20 @@ export class P2PService {
   connect(
     client: SocketServiceConnection
   ) {
-    const { name, peerMQ, disconnectSignal$ } = client
-    console.info(`${name}: connected`)
-    this.clients.set(name, client)
+    const { connectionId, peerMQ, disconnectSignal$ } = client
+    console.info(`${SocketServiceConnection.name}: ${connectionId}: connected`)
+    this.clients.set(connectionId, client)
 
     peerMQ.selectTypedMessage(P2PServiceMessageWrapper)
       .pipe(
         takeUntil(disconnectSignal$),
         map(message => ({
           ...message,
-          _clientId: name, // append the client id
+          sourceConnectionId: connectionId, // append the client id
         })),
         forwardTo(this.stream),
         finalize(() => {
-          this.clients.delete(name)
+          this.clients.delete(connectionId)
         })
       )
       .subscribe()
@@ -63,11 +53,7 @@ export class P2PService {
   }
 
   disconnect(name: string) {
-    const connection = this.clients.get(name)
-    if (connection) {
-      completeSubject(connection.disconnectSignal$)
-    }
+    this.clients.get(name)?.disconnect()
   }
 
 }
-

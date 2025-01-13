@@ -4,11 +4,12 @@
       {{ n }}
     </p>
   </div>
-  <div [class]="bem('channel-messages')">
+  <div #aaa [class]="bem('channel-messages')">
     <ul>
-      <li *ngFor="let message of chatService.getChannelMessages(channel())">
-        {{ message }}
-      </li>
+      <app-chat-message
+        *ngFor="let message of chatService.getChannelMessages(channel())"
+        [data]="message"
+      />
     </ul>
   </div>
 </div>

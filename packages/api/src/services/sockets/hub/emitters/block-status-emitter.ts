@@ -1,6 +1,6 @@
 import { ConnectionAuthorizationData } from '@space-truckers/types'
 import { injectable } from 'tsyringe'
-import { ClientWebsocketReference } from '../../services/chat/client-web-socket-reference'
+import { ClientWebsocketReference } from '../../../chat/client-web-socket-reference'
 
 
 @injectable()

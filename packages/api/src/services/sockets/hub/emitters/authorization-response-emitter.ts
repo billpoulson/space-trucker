@@ -2,8 +2,8 @@ import { MQ } from '@space-truckers/common'
 import { ConnectionAuthorizationData } from '@space-truckers/types'
 import { injectable } from 'tsyringe'
 import WebSocket from 'ws'
-import { LoginsRepo } from '../../../db/login.repo'
-import { ClientWebsocketReference } from '../../../services/chat/client-web-socket-reference'
+import { LoginsRepo } from '../../../../db/login.repo'
+import { ClientWebsocketReference } from '../../../chat/client-web-socket-reference'
 
 
 @injectable()

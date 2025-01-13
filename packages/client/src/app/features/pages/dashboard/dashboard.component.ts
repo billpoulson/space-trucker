@@ -105,7 +105,7 @@ export class DashboardPageComponent {
   }
 
   onTabChange(event: MatTabChangeEvent) {
-    activateSelectedTab([, , this.statsTabContent], event)
+    activateSelectedTab([, this.statsTabContent], event)
   }
 
 
