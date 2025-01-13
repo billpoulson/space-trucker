@@ -14,7 +14,6 @@ export class ShipLoaderService {
     private ax: ShipStatsDatasource,
     { data$, fetch, update }: ShipStatsService,
   ) {
-    debugger
   }
 
   public load(): Observable<ShipLoaderServiceStatus> {

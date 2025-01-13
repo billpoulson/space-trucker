@@ -64,3 +64,4 @@ export class ShipStats implements ShipStatsData {
     this.accelerationData = accelerationData
   }
 }
+

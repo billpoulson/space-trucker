@@ -15,12 +15,25 @@ export function forwardTo<T>(subject: Subject<T>) {
 }
 
 export function isTruthy<T>(selector?: (data: T) => any) {
+
   if (typeof selector !== 'function') {
     return pipe(
       filter<T>((value) => Boolean(value))
     )
   }
   return pipe(
-    filter<T>((value) => !!selector!(value))
+    filter<T>((value) => {
+      const result = selector!(value)
+      if (Array.isArray(result)) {
+        return result.some(z => ![false, undefined, null].indexOf(z))
+      }
+      return !!result
+    })
   )
+}
+
+
+export function completeSubject(dispose$: Subject<void | any>) {
+  dispose$.next(+new Date)
+  dispose$.complete()
 }

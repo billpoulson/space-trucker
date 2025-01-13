@@ -2,95 +2,57 @@ import {
   AppController,
   hasContent,
   isTruthy,
-  MQ,
-  trimWhitespace,
-  WebsocketService
+  trimWhitespace
 } from '@space-truckers/common'
-import { ConnectionAuthorizationData, UserInfoObject } from '@space-truckers/types'
 import { Request } from 'express'
 import { IncomingMessage, Server } from 'http'
-import { catchError, EMPTY, firstValueFrom, lastValueFrom, map, Subject, timeout } from 'rxjs'
+import { catchError, concatMap, firstValueFrom, map, of, tap, timeout } from 'rxjs'
 import { DependencyContainer, inject, singleton } from 'tsyringe'
 import WebSocket from 'ws'
-import { EXPRESS_SERVER$$, SCOPED_CONTAINER$$, WSTOKEN_SEND_FN$$ } from '../../ioc/injection-tokens'
-import { UserSocketChat } from '../../services/chat/user-socket-chat'
+import { EXPRESS_SERVER$$, SCOPED_CONTAINER$$ } from '../../ioc/injection-tokens'
 import { JWTTokenAuthenticationService } from '../../services/security/jwt-token-authentication-service'
-import { ClientWebsocketEntryPoint } from './client-websocket.entry-point'
+import { createClientScope } from './create-client-scope'
+import { SocketConnectionInfo } from './socket-connection-info'
+
 
 @singleton()
 export class WebSocketServer implements AppController {
-  nextConnectionId = 0
   wss: WebSocket.Server<typeof WebSocket, typeof IncomingMessage>
+  connections = new Map<string, SocketConnectionInfo>()
+
   constructor(
     @inject(EXPRESS_SERVER$$) server: Server,
     @inject(SCOPED_CONTAINER$$) public scope: DependencyContainer,
     private jwtAuthService: JWTTokenAuthenticationService,
   ) {
-    // Create WebSocket server
-    this.wss = new WebSocket.Server({ server })
-    // Handle WebSocket connections
-    this.wss.on('connection', this.acceptConnectionHandler.bind(this))
+    this.wss = new WebSocket.Server({ server })// Create WebSocket server
+    this.wss.on('connection', this.tryStartClientContainer.bind(this))// Handle WebSocket connections
   }
 
-  private createClientScopedContainer(
-    profile: UserInfoObject,
-    ws: WebSocket,
-    connectionId: number,
-  ) {
-    let clientMessageId = 0
-    const generateNextUUID = () => ({ uuid: clientMessageId++ })
-
-    return this.scope
-      .createChildContainer()
-      .registerSingleton(MQ)
-      .registerSingleton(ConnectionAuthorizationData)
-      .registerSingleton(WebSocket)
-      .registerSingleton(UserInfoObject)
-      .registerSingleton(WebsocketService)
-      .registerSingleton(UserSocketChat)
-      .registerSingleton(ClientWebsocketEntryPoint)
-      .register(ConnectionAuthorizationData, { useValue: { connectionId } })
-      .register(WebSocket, { useValue: ws })
-      .register(UserInfoObject, { useValue: profile })
-      .register(WebsocketService, { useValue: new WebsocketService().useWebSocket(ws), })
-      .register(WSTOKEN_SEND_FN$$, {
-        useValue: (message: any) =>
-          ws.send(JSON.stringify({
-            ...message,
-            ...generateNextUUID()// append a uuid to every message
-          }))
-      })
-
-  }
-
-  async acceptConnectionHandler(ws: WebSocket, req: Request) {
-    const connectionId = this.nextConnectionId++
-    console.log(`New WebSocket connection opened. : ${connectionId}`)
-    const websocketConnectinClose$ = new Subject<number>()
-    const socketClosed$ = lastValueFrom(websocketConnectinClose$)
-
-    const token = this.getTokenFromRequest(req)
-
-    ws.on('close', () => {
-      websocketConnectinClose$.next(+new Date())
-      websocketConnectinClose$.complete()
-    })
-
+  acceptConnectionHandler(ws: WebSocket, req: Request) {
     // try to authorize the user, and return their profile
-    const container = await firstValueFrom(
-      this.jwtAuthService.tryVerifyOauthToken(token)
-        .pipe(
-          isTruthy(([allow]) => allow),
-          isTruthy(([_, profile]) => profile),
-          map(([_, profile]) => this.createClientScopedContainer(profile!, ws, connectionId)),
-        ).pipe(
-          timeout(3000),
-          catchError(_ => EMPTY)
-        ),
-    )
+    return of(req)
+      .pipe(
+        timeout(10000),// allow up to 10 seconds to accept connection
+        map(req => this.getTokenFromRequest(req)),
+        concatMap(token => this.jwtAuthService.tryVerifyOauthToken(token)),
+        isTruthy(([allowConnection, profile]) => [allowConnection, profile]),
+        map(([_, profile]) => SocketConnectionInfo.create(profile!, ws)),
+        tap(connection => { this.connections.set(connection.connectionId, connection) }),
+        map((conn) => createClientScope(this.scope, conn)),
+        catchError((err) => {
+          console.error(err)
+          return of(null)
+        })
+      )
+  }
 
-    // if a container was produced, this will start the websocket for the client
-    container?.resolve(ClientWebsocketEntryPoint)
+  async tryStartClientContainer(ws: WebSocket, req: Request) {
+    await firstValueFrom(this.acceptConnectionHandler(ws, req)
+      .pipe(tap(container => {
+        // if a container was produced, this will start the websocket for the client
+        container?.activate()
+      })))
   }
 
   private getTokenFromRequest(req): string {

@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "dotenv-pull:all": "npm run dotenv-pull --workspaces --if-present",
+    "dotenv-push:all": "npm run dotenv-push --workspaces --if-present",
     "dotenv-pull": "npx dotenv-vault@latest pull",
     "dotenv-push": "npx dotenv-vault@latest push"
   },
@@ -22,6 +23,7 @@
     "@angular/router": "^19.0.0",
     "@auth0/auth0-angular": "^2.2.3",
     "ag-grid-angular": "^33.0.3",
+    "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "cors": "^2.8.5",
     "dexie": "^4.0.10",

@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { TruckDetailsModule } from './truck-details/truck-details.module';
-import { LoginPageModule } from './login/login-page.module';
+import { NgModule } from '@angular/core'
+import { DashboardModule } from './dashboard/dashboard.module'
+import { TruckDetailsModule } from './truck-details/truck-details.module'
+import { UserProfileModule } from './user-profile/user-profile.module'
 
 
 const modules = [
   DashboardModule,
   TruckDetailsModule,
-  LoginPageModule,
+  UserProfileModule
 ]
 @NgModule({
   imports: modules,

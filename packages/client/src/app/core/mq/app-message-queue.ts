@@ -31,7 +31,7 @@ export class AppMessageQueue {
   selectTypedMessage<TData>(
     MessageClass: MessageConstructor<TData, MessageData<TData>>
   ) {
-    let rxCount = -1;// number of messages received on this selector
+    let rxCount = -1// number of messages received on this selector
     return this.mq.pipe(
       filter(({ type }) => type === convertToKebabCase(MessageClass.name)),
       tap(({ uuid }) => {
@@ -44,25 +44,44 @@ export class AppMessageQueue {
   createTypedMessageInterface
     <TData>(
       MessageClass: MessageConstructor<TData, MessageData<TData>>
-    ) {
+    ): { send: (data: TData) => void } {
     return {
       send: (data: TData) => {
         this.socket.send(
-          this.createMessage(MessageClass, data)
+          createWrappedMessage(MessageClass, data)
         )
       }
     }
   }
+  // asd<TData>(
+  //   MessageClass: MessageConstructor<TData, MessageData<TData>>
+  // ): { send: (data: TData) => void } {
+  //   MessageConstructor<TData, MessageData<TData>
+  //   const { send } = this.createTypedMessageInterface(MessageClass)
+  //   send(createWrappedMessage(WebRTCConnectionAnswer, answer))
+  //   return null as any
+  // }
+  // createMessage<TData>(
+  //   MessageClass: MessageConstructor<TData, MessageData<TData>>,
+  //   data: TData
+  // ): MessageData<TData> {
+  //   const { name } = MessageClass
+  //   return {
+  //     ...new MessageClass(data),
+  //     type: convertToKebabCase(name)
+  //   } as MessageData<TData>
+  // }
 
-  createMessage<TData>(
-    MessageClass: MessageConstructor<TData, MessageData<TData>>,
-    data: TData
-  ): MessageData<TData> {
-    const { name } = MessageClass
-    return {
-      ...new MessageClass(data),
-      type: convertToKebabCase(name)
-    } as MessageData<TData>
-  }
+}
 
+
+export function createWrappedMessage<TData>(
+  MessageClass: MessageConstructor<TData, MessageData<TData>>,
+  data: TData
+): MessageData<TData> {
+  const { name } = MessageClass
+  return {
+    ...new MessageClass(data),
+    type: convertToKebabCase(name)
+  } as MessageData<TData>
 }

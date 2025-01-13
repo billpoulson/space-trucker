@@ -12,16 +12,16 @@ export class ChatServerService {
   channels = ['GLOBAL', 'TEST']
 
   stream = new Subject<ClientChatMessageData>
-  users: Array<ChatUserData> = [];
+  clients = new Map<string, ChatUserData>()
 
   constructor() {
     merge(
       this.stream.pipe(
-        concatMap((message) => from(this.users)
+        concatMap((message) => from(this.clients.entries())
           .pipe(
-            filter(user => user.name !== message.user),
-            filter((user) => user.isSubscribedToMessage(message)),
-            tap(({ send }) => {
+            filter(([, user]) => user.name !== message.user),
+            filter(([, user]) => user.isSubscribedToMessage(message)),
+            tap(([, { send }]) => {
               send({
                 type: convertToKebabCase(ClientChatMessage.name),
                 data: message
@@ -39,46 +39,48 @@ export class ChatServerService {
   ) {
     const joinChannels = ['GLOBAL', 'TEST']
     console.info(`${name}: connected`)
-    this.users.push(new ChatUserData(
+    this.clients.set(name, new ChatUserData(
       name, ws, sendJson, joinChannels
     ))
-    this.users = this.users
-      .filter(({ ws }) => ws.readyState === WebSocket.OPEN)
-    const user = this.users.find((user) => user.name == name)!
   }
 
-  deregister(name: string) {
-    this.users = this.users
-      .filter(({ ws }) => ws?.readyState === WebSocket.OPEN)
-      .filter(({ name }) => name != name)
-
-    const user = this.users.find((user) => user.name == name)!
-    this.pushChannelUsersUpdate(user)
+  deregister(clientId: string) {
+    const client = this.clients.get(clientId)!
+    this.clients.delete(clientId)
+    this.pushChannelUsersUpdate(client)
   }
 
   pushChannelUsersUpdate(initByUser: ChatUserData) {
-    this.users
-      .filter(user => user.channelSubscriptions.some(sub => initByUser.channelSubscriptions.includes(sub))) // only users subscribed to the same channel as the initByUser
-      .map((user, _, users) => /* build map of users in channels*/
+    Array.from(this.clients.entries())
+      .filter(([, user]) =>
+        user.channelSubscriptions.some(sub => initByUser.channelSubscriptions.includes(sub))
+      ) // only users subscribed to the same channel as the initByUser
+      .map(([key, user], _,) => /* build map of users in channels*/
         [user, user.channelSubscriptions
           .reduce((state, channel) => ({
             ...state,
-            [channel]: this.users.filter(peer => peer.channelSubscriptions.includes(channel)).map(({ name }) => name)
+            [channel]: Array
+              .from(this.clients.entries())
+              .filter(([, peer]) => peer.channelSubscriptions.includes(channel))
+              .map(([, { name }]) => name)
           }), {})] as [ChatUserData, any])
       .forEach(([{ send }, data]) => {
-        // send user updated list of users in channels
-        send({ type: convertToKebabCase(PushChannelUsersMessage.name), data })
+        send({
+          type: convertToKebabCase(PushChannelUsersMessage.name),
+          data
+        })
       })
   }
 
   updateUsername(oldName: string, newName: string) {
-    const idx = this.users.findIndex(({ name }) => name === oldName)
-    this.users[idx].name = newName
-    this.pushChannelUsersUpdate(this.users[idx])
+    const aa = this.clients.get(oldName)!
+    aa.name = newName
+
+    this.pushChannelUsersUpdate(aa)
   }
 
   isUsernameInUse(checkName: string) {
-    return this.users.findIndex(({ name }) => name === checkName) > -1
+    return Object.keys(this.channels.entries).includes(checkName)
   }
 }
 

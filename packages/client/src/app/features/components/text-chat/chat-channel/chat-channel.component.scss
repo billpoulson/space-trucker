@@ -1,0 +1,15 @@
+.app-chat-channel {
+  &__container {
+    @apply min-h-52;
+    @apply flex;
+  }
+  &__user-list {
+    @apply bg-slate-500 w-52;
+  }
+  &__user-name {
+    @apply px-3 overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+  &__channel-messages {
+    @apply bg-slate-400 px-3 grow;
+  }
+}

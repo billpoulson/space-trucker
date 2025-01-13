@@ -2,6 +2,45 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "ngrok",
+      "type": "shell",
+      "command": "ngrok http --domain=tick-enough-kid.ngrok-free.app 4200",
+      "dependsOn": "ng serve",
+
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "angular",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": [
+          {
+            "regexp": "^(.+):\\[(\\d+),\\s*(\\d+)\\]:\\s*(ERROR|WARNING)\\s*-\\s*(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": ".*Session Status.*online*"
+        },
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
+      }
+    },
+    {
       "label": "ng serve",
       "type": "shell",
       "command": "ng serve",

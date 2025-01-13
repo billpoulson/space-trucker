@@ -6,7 +6,7 @@ import { convertToKebabCase } from '../utils'
 @injectable()
 export class MQ extends Subject<{ type: string, uuid: string, data: any }> {
 
-  override next(value: { type: string; uuid: string; data: any; }): void {
+  override next(value: { type: string; uuid: string; data: any }): void {
     super.next(value)
   }
 
@@ -23,13 +23,27 @@ export class MQ extends Subject<{ type: string, uuid: string, data: any }> {
   selectTypedMessage<TData>(
     MessageClass: MessageConstructor<TData, MessageData<TData>>
   ): Observable<TData> {
-    let rxCount = -1;// number of messages received on this selector
+    let rxCount = -1// number of messages received on this selector
     return this.pipe(
       filter(({ type }) => type === convertToKebabCase(MessageClass.name)),
       tap(({ uuid }) => {
         console.log(`${rxCount++} : received message ${uuid} ${convertToKebabCase(MessageClass.name)}`)
       }),
       map(({ data }) => data as TData)
+    )
+  }
+
+  selectInnerMessage<TData extends { type: string, uuid: string, data: TNested }, TNested>(
+    aa: Observable<any>,
+    MessageClass: MessageConstructor<TNested, MessageData<TNested>>
+  ): Observable<TNested> {
+    let rxCount = -1// number of messages received on this selector
+    return aa.pipe(
+      filter(({ type }) => type === convertToKebabCase(MessageClass.name)),
+      tap(({ uuid }) => {
+        console.log(`${rxCount++} : received message ${uuid} ${convertToKebabCase(MessageClass.name)}`)
+      }),
+      map(({ data }) => data as TNested)
     )
   }
 
@@ -45,7 +59,19 @@ export class MQ extends Subject<{ type: string, uuid: string, data: any }> {
       }
     }
   }
-
+  // createTypedMessageInterfacexx
+  //   <TData>(
+  //     o: Observable<TData>,
+  //     MessageClass: MessageConstructor<TData, MessageData<TData>>
+  //   ) {
+  //   return {
+  //     send: (data: TData) => {
+  //       this.aa.sendMessage(
+  //         this.createMessage(MessageClass, data)
+  //       )
+  //     }
+  //   }
+  // }
   createMessage<TData>(
     MessageClass: MessageConstructor<TData, MessageData<TData>>,
     data: TData

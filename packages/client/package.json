@@ -5,5 +5,9 @@
     "dotenv-pull": "npx dotenv-vault@latest pull",
     "dotenv-push": "npx dotenv-vault@latest push",
     "generate-env": "nodemon --watch .env --exec tsx generate-env.ts"
+  },
+  "dependencies": {
+    "@types/three": "^0.172.0",
+    "three": "^0.172.0"
   }
 }

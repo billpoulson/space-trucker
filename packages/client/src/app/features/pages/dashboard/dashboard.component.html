@@ -1,58 +1,77 @@
 <mat-toolbar>
-  <mat-toolbar-row class="border-botttom-1px-white">
+  <mat-toolbar-row>
     <div>
-      <mat-icon aria-hidden="false" aria-label="Example home icon">local_shipping</mat-icon>&nbsp;
-      Space Trucker
+      <mat-icon aria-hidden="false" aria-label="Example home icon"
+        >local_shipping</mat-icon
+      >&nbsp; Space Trucker
     </div>
     <span class="expand-block"></span>
-    <app-clock-toggle />
+    <app-connect-webservice-button [autoConnect]="true" />
+    <app-voice-chat [autoConnect]="false" />
+    <app-start-fake-request-button />
   </mat-toolbar-row>
-  <mat-toolbar-row>
-    <app-tick-counter-value />
-  </mat-toolbar-row>
-  <mat-toolbar-row>
-    <h1 class="text-3xl font-bold underline">
-      Hello world!
+  <mat-toolbar-row
+    class="bg-gradient-to-l from-purple-500 to-transparent rounded-full"
+  >
+    <h1 class="text-3xl font-bold">
+      Logged In as
+      <app-current-username />
     </h1>
+    <span class="expand-block"></span>
+    <button
+      mat-flat-button
+      color="secondary"
+      class="drop-shadow-lg"
+      routerLink="/profile"
+    >
+      Go to Profile
+    </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <app-start-fake-request-button
+      text="Deliveries"
+      icon="compare_arrows"
+      duration="3000"
+    />
+    <span class="expand-block"></span>
+    <app-start-fake-request-button
+      text="Admin"
+      icon="shield_person"
+      duration="1000"
+    />
   </mat-toolbar-row>
 </mat-toolbar>
+
 <mat-card class="example-card" appearance="outlined">
   <mat-card-content>
-    <app-acceleration-curve/>
-
+    <mat-tab-group
+      mat-stretch-tabs="false"
+      mat-align-tabs="start"
+      animationDuration="0ms"
+      [preserveContent]="true"
+      (selectedTabChange)="onTabChange($event)"
+    >
+      <mat-tab label="Chat">
+        <app-chat-panel />
+      </mat-tab>
+      <mat-tab label="Model Viewer">
+        <app-example-gameroot />
+      </mat-tab>
+      <mat-tab label="Stats">
+        <app-acceleration-curve #statsTabContent [deferRender]="true" />
+      </mat-tab>
+      <mat-tab label="Loads">
+        <app-grid-example />
+      </mat-tab>
+      <mat-tab label="Stations">
+        <app-grid-example />
+      </mat-tab>
+      <mat-tab label="Trucks">
+        <app-truck-details  style="flex-grow: 1"></app-truck-details>
+        <app-truck-details style="flex-grow: 1"></app-truck-details>
+        <app-truck-details style="flex-grow: 1"></app-truck-details>
+      </mat-tab>
+      <mat-tab label="Pirates"> Pirates </mat-tab>
+    </mat-tab-group>
   </mat-card-content>
 </mat-card>
-<mat-card class="example-card" appearance="outlined">
-  <mat-card-actions>
-    <mat-toolbar-row>
-      <app-connect-webservice-button />
-    </mat-toolbar-row>
-  </mat-card-actions>
-  <mat-card-content>
-    <app-chat-panel />
-  </mat-card-content>
-</mat-card>
-<mat-card class="example-card" appearance="outlined">
-  <mat-card-content>
-    <app-stackbar [blockCount]="blockCount"></app-stackbar>
-  </mat-card-content>
-</mat-card>
-
-
-
-
-
-<mat-divider></mat-divider>
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-  <mat-tab label="Loads">
-    <app-grid-example></app-grid-example>
-  </mat-tab>
-  <mat-tab label="Trucks">
-    <app-truck-details style="flex-grow: 1;"></app-truck-details>
-    <app-truck-details style="flex-grow: 1;"></app-truck-details>
-    <app-truck-details style="flex-grow: 1;"></app-truck-details>
-  </mat-tab>
-  <mat-tab label="Pirates">
-    Pirates
-  </mat-tab>
-</mat-tab-group>

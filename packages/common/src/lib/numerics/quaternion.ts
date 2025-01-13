@@ -57,6 +57,7 @@ export class Quaternion extends Vector3 {
     const result = this.multiply(qVector).multiply(qConjugate)
     return Vector3.createVector3([result.x, result.y, result.z])
   }
+  static override zero: Quaternion = Quaternion.createQuaternion([1, 0, 0, 0])
 
 }
 

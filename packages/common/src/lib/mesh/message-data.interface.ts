@@ -1,1 +1,1 @@
-export interface MessageData<TData> { data: TData} 
+export interface MessageData<TData> { data: TData } 

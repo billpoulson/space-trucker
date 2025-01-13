@@ -1,8 +1,14 @@
 import { Observable } from 'rxjs'
+import { newUUID } from '../uuid'
 import { WebsocketFacade } from './websocket.facade'
 
 export class WebsocketService {
-
+  static createProvider(socket: WebsocketFacade) { 
+    return  { useValue: WebsocketService.createFromInstance(socket), }
+  }
+  static createFromInstance(socket: WebsocketFacade) { 
+    return new WebsocketService().useWebSocket(socket)
+  }
   private wsSubject!: WebSocket
   useWebSocket(socket: WebsocketFacade): WebsocketService {
     this.wsSubject = socket as WebSocket
@@ -38,9 +44,10 @@ export class WebsocketService {
   disconnect() {
     this.wsSubject.close(1000, 'user disconnected')
   }
-  uid = 0;
+
   sendMessage(message: any): void {
-    message.uuid = this.uid++
+    message.uuid = newUUID()
+    
     if (this.wsSubject && this.wsSubject.readyState === WebSocket.OPEN) {
       console.log(`sending message ${message.type}`)
       this.wsSubject.send(JSON.stringify(message))

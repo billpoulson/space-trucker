@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common'
-import { HttpClient } from '@angular/common/http'
 import { Component, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { RouterOutlet } from '@angular/router'
 import { AuthService } from '@auth0/auth0-angular'
-import { catchError, firstValueFrom, timeout } from 'rxjs'
+import { Observable } from 'rxjs'
 import { defaultTheme, THEME_TOKEN } from './config/theme.config'
 import { UIModule } from './core/modules/ui.module'
-import { AuthroizedWebSocketService } from './core/services/sockets/authorized-web-socket.service'
-import { WebsocketService } from './core/services/sockets/web-socket.service'
+import { UX } from './features/components/shared/app-loading-spinner/UX'
 import { PagesModule } from './features/pages/pages.module'
 
 @Component({
@@ -27,26 +25,19 @@ import { PagesModule } from './features/pages/pages.module'
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  // isAuthenticated$: Observable<boolean>;
+  isLoading$: Observable<boolean>
+  fullUrl!: string
   constructor(
-    private http: HttpClient,
-    websocketService: WebsocketService,
     public authService: AuthService,
-    public socket: AuthroizedWebSocketService
+    private ux: UX,
   ) {
-    this.socket.messages.subscribe(m => {
-      if (m.serverTime) {
-        console.log(new Date(m.serverTime))
-      }
-    })
+    this.isLoading$ = ux.useLoadingStatus$()
   }
 
-
   async ngOnInit() {
-    await firstValueFrom(this.authService.isAuthenticated$.pipe(
-      timeout(3000),
-      catchError((err, caught) => this.authService.loginWithRedirect()),
-    ))
+    await this.ux.withLogin$()
+
+    
   }
 
   title = 'space-trucker';

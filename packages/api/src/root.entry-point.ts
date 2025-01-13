@@ -13,12 +13,12 @@ export class RootEntryPoint {
     private loadServer: LoadsModule
   ) {
     console.info(this.constructor.name)
-    loadServer.clockController.toggleClock()
   }
   
   public async bootstrap() {
-    await this.expressServer.init()
-    const j = await createShip(this.scope)
-    const j2 = new stationMgr(this.scope)
+    await this.expressServer.init()// setup http and websocket server
+    const j = await createShip(this.scope)// create a test ship
+    const j2 = new stationMgr(this.scope)// create a test station
+    this.loadServer.clockController.toggleClock()// start the load server
   }
 }

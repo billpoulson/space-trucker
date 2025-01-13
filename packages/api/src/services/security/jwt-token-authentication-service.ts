@@ -2,12 +2,12 @@ import { UserInfoObject } from '@space-truckers/types'
 import jwt from 'jsonwebtoken'
 import { JwksClient } from 'jwks-rsa'
 import fetch from 'node-fetch'
-import { from } from 'rxjs'
+import { catchError, from, map, Observable, of } from 'rxjs'
 import { inject, singleton } from 'tsyringe'
 import { AUTH_ISSUER_DOMAIN$$ } from '../../ioc/security/injection-tokens'
-import { JWTVerifyOptions } from '../../server/http/oauth/jwt-verify-options'
+import { JWTVerifyOptions } from './oauth/jwt-verify-options'
 
-
+type TokenVerificationResponse = [boolean, UserInfoObject | undefined]
 @singleton()
 export class JWTTokenAuthenticationService {
   constructor(
@@ -65,19 +65,18 @@ export class JWTTokenAuthenticationService {
 
   tryVerifyOauthToken(
     token: string
-  ) {
-    return from(
-      new Promise<[boolean, UserInfoObject?]>(
-        async (resolve) => {
-          await this.verifyToken(token)
-            .then((val) => {
-              console.log(`Connection accepted.`)
-              resolve([true, val])
-            }).catch((reason) => {
-              console.log(`Connection rejected. : ${reason}`)
-              resolve([false, undefined])
-            })
+  ): Observable<TokenVerificationResponse> {
+    return from(this.verifyToken(token))
+      .pipe(
+        map(val => {
+          console.log(`Connection accepted.`)
+          return [false, val] as TokenVerificationResponse
+        }),
+        catchError((err) => {
+          console.log(`Connection rejected. : ${err}`)
+          console.error(err)
+          return of<TokenVerificationResponse>([false, undefined])
         })
-    )
+      )
   }
 }

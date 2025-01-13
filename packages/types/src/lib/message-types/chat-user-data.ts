@@ -15,7 +15,7 @@ export class ChatUserData {
 
 export class ConnectionAuthorizationData {
     constructor(
-        public connectionId: number
+        public connectionId: string
     ) {
     }
 };

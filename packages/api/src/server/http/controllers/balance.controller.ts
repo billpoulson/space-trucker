@@ -16,7 +16,7 @@ export default (
     next()
   })
   router.post('/balance', requestScopedAction<PingRequest>(
-    (scope, req, res, params, body) => {
+    async (scope, req, res, params, body) => {
       res.send(JSON.stringify({
         enc: a.encryptAndEncode('$100'),
         org: '$100'

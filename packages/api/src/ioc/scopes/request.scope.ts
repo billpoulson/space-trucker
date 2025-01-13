@@ -23,7 +23,7 @@ export const createRequestScopedHandler = (
       res: Response,
       params: Map<string, string>,
       body: TBody
-    ) => void
+    ) => Promise<void>
   ) => {
     return async (
       req: Request,

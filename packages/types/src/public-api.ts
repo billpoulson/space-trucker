@@ -15,6 +15,7 @@
 
 export type Dictionary<TVal> = { [k: string | number]: TVal }
 
+export * from './lib/interfaces'
 export * from './lib/message-types/index'
 export * from './lib/user-info-object'
 

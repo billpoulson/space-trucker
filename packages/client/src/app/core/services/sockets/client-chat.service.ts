@@ -24,16 +24,16 @@ export class ClientChatService {
   })
   state$ = this._state$.asObservable()
 
-
   private messageLog: Array<ClientChatMessageData> = []
-  // private send: Subject<any>;
-  // private mq: Subject<{ type: string, data: any }>;
+  channelUsersCache: Map<any, any>
 
   constructor(
     private appMq: AppMessageQueue,
     private notifyOf: NotificationService
   ) {
+    this.channelUsersCache = new Map<string, Array<string>>
     this.clientChatMessage = this.appMq.createTypedMessageInterface(ClientChatMessage)
+
     merge(
       appMq.selectTypedMessage(ClientChatMessage)
         .pipe(tap(data => {
@@ -87,7 +87,8 @@ export class ClientChatService {
       .pipe(
         filter((data) => channel in data),
         map((data) => data[channel]),
-        startWith([] as Array<string>)
+        tap(newData => { this.channelUsersCache.set(channel, newData) }),
+        startWith(this.channelUsersCache.get(channel))
       )
   }
 

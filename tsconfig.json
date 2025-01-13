@@ -4,6 +4,9 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
+      "@space-truckers/GGG": [
+        "./packages/api/src/services/sp/ship/model/*.ts",
+      ],
       "@space-truckers/common": [
         "./packages/common/src/public-api.ts"
       ],

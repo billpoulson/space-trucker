@@ -1,21 +1,16 @@
-import { MQ } from '@space-truckers/common'
-import { ConnectionAuthorizationData } from '@space-truckers/types'
 import { injectable } from 'tsyringe'
-import WebSocket from 'ws'
 import { ChatServerService } from '../../services/chat/chat-server-service'
-import { ClientWebsocketReference } from '../../services/chat/client-web-socket-reference'
-import { UserSocketChat } from '../../services/chat/user-socket-chat'
+import { UserSocketChat, UserSocketChatPrompt } from '../../services/chat/user-socket-chat'
+import { P2PConnection } from '../../services/p2p/p2p-connection'
 import { AuthorizationResponseEmitter } from './emitters/authorization-response-emitter'
 
 @injectable()
 export class ClientWebsocketEntryPoint {
     constructor(
         public authorizationResponseHandler: AuthorizationResponseEmitter,
-        public clientAuthorization: ConnectionAuthorizationData,
-        public clientSocket: WebSocket,
-        public clientSocketRelay: ClientWebsocketReference,
         public commsService: ChatServerService,
         public UserSocketScopedCHAT: UserSocketChat,
-        public mq: MQ,
+        public p2p: P2PConnection,
+        public promptCompanion: UserSocketChatPrompt
     ) { }
 }
