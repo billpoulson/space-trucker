@@ -1,6 +1,6 @@
 import { UserInfoObject } from '@space-truckers/types'
 import { injectable } from 'tsyringe'
-import { createMockShipStats } from '../services/sp/ship/data/mocks'
+import { createMockShipStats } from '../../services/sp/ship/data/mocks'
 import { AppDbContext } from './core/context'
 import { AppDbRepo } from './core/repo'
 

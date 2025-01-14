@@ -7,6 +7,7 @@ import { UserSocketChat, } from '../../services/chat/user-socket-chat'
 import { UserSocketChatPrompt } from '../../services/chat/user-socket-chat-prompt'
 import { ClientWebsocketConnectionInstance } from '../../services/sockets/socket-connection-info'
 import { WSTOKEN_SEND_FN$$ } from '../injection-tokens'
+import { registerUserRBACContainer } from '../modules/register-rbac-container'
 
 export function createClientScope(
   parentScope: DependencyContainer,
@@ -35,6 +36,8 @@ export function createClientScope(
         ...{ uuid: newUUID() } // append a uuid to every message
       }))
     })
+    
+  registerUserRBACContainer(scope)
 
   return {
     scope,

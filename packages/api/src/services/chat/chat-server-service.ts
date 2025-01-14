@@ -42,6 +42,7 @@ export class ChatServerService {
   ): ClientChatMessageSenderFragment {
     const joinChannels = ['GLOBAL']
     console.info(`${ChatServerService.name}: ${user}: connected`)
+
     const newClient = new ChatUserData(
       connectionId, user, ws, sendJson, joinChannels
     )
@@ -58,9 +59,7 @@ export class ChatServerService {
   }
 
   pushChannelUsersUpdate(initByUser: ChatUserData) {
-    if (initByUser === undefined) {
-      debugger
-    }
+    if (initByUser === undefined) { debugger }
     Array.from(this.clients.entries())
       .filter(([, user]) => {
         if (user === undefined) {

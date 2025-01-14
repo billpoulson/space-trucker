@@ -31,20 +31,9 @@ export class JWTTokenAuthenticationService {
     return new Promise((resolve, reject) => {
       jwt.verify(token, get, this.options, async (err, decoded) => {
         if (err) {
-          reject('Token verification failed')
+          reject(`Token verification failed: ${err.message}`)
         } else {
-          await fetch(
-            `https://${this.issuerDomain}/userinfo`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          })
-            .then(response => response.json())
-            .then(data => {
-              resolve(data as any)
-            })
-
+          await this.getUserInfo(token).then(resolve)
         }
       })
     })

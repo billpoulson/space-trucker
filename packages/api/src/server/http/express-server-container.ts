@@ -3,7 +3,7 @@ import express from 'express'
 import { auth } from 'express-oauth2-jwt-bearer'
 import { Server } from 'http'
 import { DependencyContainer, inject, singleton } from 'tsyringe'
-import { AppDbContext } from '../../db/core/context'
+import { AppDbContext } from '../../db/jsondb/core/context'
 import {
   EXPRESS_APP$$,
   EXPRESS_SERVER$$, SCOPED_CONTAINER$$, STATIC_CONTENT_PATH$$

@@ -11,6 +11,7 @@ import { CardActionsExampleContent } from './card-example-content/card-example.c
 import { ChartComponent } from './chart/chart.component'
 import { ConnectWebServiceButtonComponent } from './connect-webservice-button/connect-webservice.component'
 import { CurrentUsernameComponent } from './current-username/current-username.component'
+import { LogOutButtonComponent } from './log-out-button/log-out-button.component'
 import { ClockToggleComponent } from './primitive/clock-toggle/clock-toggle.component'
 import { TickCounterValueComponent } from './primitive/tick-counter-value/tick-counter-value.component'
 import { TypographyComponent } from './primitive/typography/typography.component'
@@ -37,7 +38,8 @@ const sharedComponents = [
   StarMapViewPortComponentd,
   CurrentUsernameComponent,
   AppLoadingSpinnerComponent,
-  StartFakeRequestButtonComponent
+  StartFakeRequestButtonComponent,
+  LogOutButtonComponent
 ]
 
 @NgModule({

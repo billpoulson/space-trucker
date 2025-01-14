@@ -6,9 +6,10 @@
       >&nbsp; Space Trucker
     </div>
     <span class="expand-block"></span>
-    <app-connect-webservice-button [autoConnect]="true" />
-    <app-voice-chat [autoConnect]="false" />
-    <app-start-fake-request-button />
+    <!-- <app-connect-webservice-button [autoConnect]="true" />
+    <app-voice-chat [autoConnect]="false" /> -->
+    <!-- <app-start-fake-request-button /> -->
+    <app-log-out-button/>
   </mat-toolbar-row>
   <mat-toolbar-row
     class="bg-gradient-to-l from-purple-500 to-transparent rounded-full"
@@ -67,7 +68,7 @@
         <app-grid-example />
       </mat-tab>
       <mat-tab label="Trucks">
-        <app-truck-details  style="flex-grow: 1"></app-truck-details>
+        <app-truck-details style="flex-grow: 1"></app-truck-details>
         <app-truck-details style="flex-grow: 1"></app-truck-details>
         <app-truck-details style="flex-grow: 1"></app-truck-details>
       </mat-tab>

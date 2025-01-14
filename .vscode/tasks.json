@@ -6,7 +6,6 @@
       "type": "shell",
       "command": "ngrok http --domain=tick-enough-kid.ngrok-free.app 4200",
       "dependsOn": "ng serve",
-
       "isBackground": true,
       "problemMatcher": {
         "owner": "angular",
@@ -109,8 +108,46 @@
       }
     },
     {
+      "label": "mongodb",
+      "type": "shell",
+      "command": "mongod",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "angular",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": [
+          {
+            "regexp": "^(.+):\\[(\\d+),\\s*(\\d+)\\]:\\s*(ERROR|WARNING)\\s*-\\s*(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": ".*Waiting for connections*"
+        },
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
+      }
+    },
+    {
       "label": "watch env",
       "type": "shell",
+      "dependsOn": "mongodb",
       "command": "npm run generate-env -w=@space-truckers/client",
       "isBackground": true,
       "problemMatcher": {

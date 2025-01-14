@@ -5,7 +5,7 @@ import {
 } from '@space-truckers/common'
 import { Request } from 'express'
 import { IncomingMessage, Server } from 'http'
-import { concatMap, map, of, tap, timeout } from 'rxjs'
+import { concatMap, map, of, tap } from 'rxjs'
 import { DependencyContainer, inject, singleton } from 'tsyringe'
 import WebSocket from 'ws'
 import { EXPRESS_SERVER$$, SCOPED_CONTAINER$$ } from '../../ioc/injection-tokens'
@@ -37,7 +37,7 @@ export class WebSocketServer implements AppController {
     // try to authorize the user, and return their profile
     return of(req)
       .pipe(
-        timeout(10000),// allow up to 10 seconds to accept connection
+        // timeout(10000),// allow up to 10 seconds to accept connection
         map(req => this.getTokenFromRequest(req)),
         concatMap(token => this.jwtAuthService.tryVerifyOauthToken(token)),
         map(([_, profile]) => ClientWebsocketConnectionInstance.create(profile!, ws)),

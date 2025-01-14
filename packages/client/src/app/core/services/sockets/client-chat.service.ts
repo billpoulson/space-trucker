@@ -75,12 +75,6 @@ export class ClientChatService {
       })
   }
 
-  getChannelMessages2(channel: string, last = 10) {
-    return this.messageLog
-      .filter(t => t.channel === channel)
-      .slice(-1 * last)
-      .map(t => `${new Date(t.timestamp).toLocaleTimeString()} | ${t.user} > ${t.message}`)
-  }
   getChannelMessages(channel: string, last = 10) {
     return this.messageLog
       .filter(t => t.channel === channel)

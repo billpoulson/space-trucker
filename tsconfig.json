@@ -4,17 +4,11 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@space-truckers/GGG": [
-        "./packages/api/src/services/sp/ship/model/*.ts",
-      ],
       "@space-truckers/common": [
         "./packages/common/src/public-api.ts"
       ],
       "@space-truckers/types": [
         "./packages/types/src/public-api.ts"
-      ],
-      "api": [
-        "./dist/api"
       ],
     },
     "noImplicitAny": false,
@@ -32,7 +26,9 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
   "exclude": [
     "**/node_modules",

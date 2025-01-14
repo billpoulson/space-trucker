@@ -2,19 +2,26 @@ import { MQ } from '@space-truckers/common'
 import { ConnectionAuthorizationData } from '@space-truckers/types'
 import { injectable } from 'tsyringe'
 import WebSocket from 'ws'
-import { LoginsRepo } from '../../../../db/login.repo'
+import { LoginsRepo } from '../../../../db/jsondb/login.repo'
+
+import { HeroRepository } from '../../../../db/mongodb/repo/hero.repo'
 import { ClientWebsocketReference } from '../../../chat/client-web-socket-reference'
 
 
 @injectable()
 export class AuthorizationResponseEmitter {
+
   constructor(
     public authorization: ConnectionAuthorizationData,
     { send }: ClientWebsocketReference,
     ws: WebSocket,
     public mq: MQ,
-    public repoImpl: LoginsRepo
+    public repoImpl: LoginsRepo,
+
+    aaas: HeroRepository,
   ) {
+    // aaa.asd()
+    aaas.create({ test: `${+new Date}` })
     // Handle incoming messages
     ws.on('message', (message: WebSocket.RawData) => {
       try {

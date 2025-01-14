@@ -2,7 +2,7 @@ import { UserInfoObject } from '@space-truckers/types'
 import express from 'express'
 import { finalize, firstValueFrom, timer } from 'rxjs'
 import { DependencyContainer } from 'tsyringe'
-import { LoginsRepo } from '../../../db/login.repo'
+import { LoginsRepo } from '../../../db/jsondb/login.repo'
 import { createRequestScopedHandler } from '../../../ioc/scopes/request.scope'
 
 type PingRequest = { s: string }

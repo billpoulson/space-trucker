@@ -14,11 +14,6 @@ export class ChatUserData {
     }
 };
 
-export class ConnectionAuthorizationData {
-    constructor(
-        public connectionId: string
-    ) {
-    }
-};
+;
 
 

@@ -1,4 +1,3 @@
-export * from './chat-user-data'
-export * from './client-chat-message.message'
-export * from './push-channel-users.message'
+export * from './client-chat-messages'
+export * from './p2p-service-messages'
 

@@ -2,7 +2,7 @@ import { DataBoundObject, LoadingState, unixTimestamp } from '@space-truckers/co
 import { ShipStats } from '@space-truckers/types'
 import { BehaviorSubject, combineLatest, from, map, of } from 'rxjs'
 import { injectable } from 'tsyringe'
-import { HangarRepo } from '../../../../../db/hangar.repo'
+import { HangarRepo } from '../../../../../db/jsondb/hangar.repo'
 
 
 @injectable()
