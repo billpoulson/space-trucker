@@ -5,6 +5,7 @@ import WebSocket from 'ws'
 import { LoginsRepo } from '../../../../db/jsondb/login.repo'
 
 import { HeroRepository } from '../../../../db/mongodb/repo/hero.repo'
+import { OllamaRAGService } from '../../../ai/ollama-rag.service'
 import { ClientWebsocketReference } from '../../../chat/client-web-socket-reference'
 
 
@@ -17,11 +18,12 @@ export class AuthorizationResponseEmitter {
     ws: WebSocket,
     public mq: MQ,
     public repoImpl: LoginsRepo,
-
-    aaas: HeroRepository,
+    heroRepo: HeroRepository,
+    ragService: OllamaRAGService
   ) {
-    // aaa.asd()
-    aaas.create({ test: `${+new Date}` })
+    ragService.loadSampleDocument()
+    heroRepo.create({ test: `${+new Date}` })
+
     // Handle incoming messages
     ws.on('message', (message: WebSocket.RawData) => {
       try {

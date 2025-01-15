@@ -1,7 +1,9 @@
 .app-chat-channel {
   &__container {
-    @apply min-h-52;
+    // @apply min-h-96;
     @apply flex;
+    min-height: 500px;
+    max-height: 600px;
   }
   &__user-list {
     @apply bg-slate-500 w-52 min-w-32;
@@ -12,7 +14,7 @@
   &__channel-messages {
     scrollbar-width: thin; /* Makes scrollbar thinner */
     scrollbar-color: #888 #151316; /* thumb color and track color */
-    max-height: 300px;
+    // max-height: 300px;
     overflow-y: scroll;
     @apply bg-slate-400 px-3 grow;
     overflow-x: hidden

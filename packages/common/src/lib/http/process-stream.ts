@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 // Utility function for handling stream data
 export const processStream = async (
   stream: any,
@@ -40,5 +42,18 @@ export const processStream = async (
       console.error('Error in stream:', error)
       reject(error)
     })
+  })
+}
+
+
+
+// Fetch a generic stream
+export async function fetchStream(url: string) {
+  const response = await axios.get(url, {
+    responseType: 'stream',
+  })
+
+  await processStream(response.data, (chunk) => {
+    console.log('Received chunk:', chunk)
   })
 }

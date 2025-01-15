@@ -1,4 +1,6 @@
 import { Component } from '@angular/core'
+import { BehaviorSubject } from 'rxjs'
+import { AuthroizedWebSocketService } from '../../../../core/services/sockets/authorized-web-socket.service'
 import { createComponentBem } from '../../../../core/util/bem'
 
 @Component({
@@ -9,4 +11,13 @@ import { createComponentBem } from '../../../../core/util/bem'
 })
 export class NotConnectedComponent {
   bem = createComponentBem('app-not-connected')
+  reconnectCountdown$: BehaviorSubject<number>
+  /**
+   *
+   */
+  constructor(
+    public chatService: AuthroizedWebSocketService,
+  ) {
+    this.reconnectCountdown$ = chatService.reconnectCountdown$
+  }
 }

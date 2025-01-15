@@ -1,0 +1,10 @@
+// :host {
+//   display: block;
+// }
+// ::ng-deep .mat-tab-label-container {
+//   display: flex; /* Ensure the tabs are flex items */
+// }
+
+// ::ng-deep .mat-tab-label:nth-child(3) {
+//   margin-left: auto; /* Push the third tab to the right */
+// }

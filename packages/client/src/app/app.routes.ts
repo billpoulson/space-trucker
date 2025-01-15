@@ -4,12 +4,18 @@ import { ChannelListModalActivator } from './features/components/text-chat/chann
 import { LogOutComponent } from './features/pages/auth/log-out/log-out.component'
 import { LoggedOutComponent } from './features/pages/auth/logged-out/logged-out.component'
 import { DashboardPageComponent } from './features/pages/dashboard/dashboard.component'
+import { ResumePageComponent } from './features/pages/resume/resume/resume.component'
 import { TruckDashboardComponent } from './features/pages/truck-details/truck-details.component'
 import { UserProfileComponent } from './features/pages/user-profile/user-profile.component'
 export const routes: Routes = [
   {
-    path: 'dashboard',
+    path: 'dashboard2',
     component: DashboardPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'dashboard',
+    component: ResumePageComponent,
     canActivate: [AuthGuard],
   },
   {
@@ -39,9 +45,14 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: DashboardPageComponent,
+    component: ResumePageComponent,
     canActivate: [AuthGuard]
   },
+  // {
+  //   path: '',
+  //   component: DashboardPageComponent,
+  //   canActivate: [AuthGuard]
+  // },
   // ...modalRoutesxx,
   {
     path: 'channel-list',

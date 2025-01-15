@@ -3,6 +3,7 @@ import { ConnectionAuthorizationData, UserInfoObject } from '@space-truckers/typ
 import { DependencyContainer } from 'tsyringe'
 import WebSocket from 'ws'
 import { ClientWebsocketEntryPoint } from '../../server/socket$/client-websocket.entry-point'
+import { OllamaRAGService } from '../../services/ai/ollama-rag.service'
 import { UserSocketChat, } from '../../services/chat/user-socket-chat'
 import { UserSocketChatPrompt } from '../../services/chat/user-socket-chat-prompt'
 import { ClientWebsocketConnectionInstance } from '../../services/sockets/socket-connection-info'
@@ -25,6 +26,7 @@ export function createClientScope(
     .registerSingleton(UserSocketChat)
     .registerSingleton(UserSocketChatPrompt)
     .registerSingleton(ClientWebsocketEntryPoint)
+    .registerSingleton(OllamaRAGService)
     .register(ClientWebsocketConnectionInstance, { useValue: connection })
     .register(ConnectionAuthorizationData, { useValue: { connectionId } })
     .register(WebSocket, { useValue: socket })

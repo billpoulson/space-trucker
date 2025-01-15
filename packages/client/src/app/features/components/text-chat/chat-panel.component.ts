@@ -28,6 +28,7 @@ export class ChatPanelComponent {
   ) {
     this.cs$ = this.chatService.state$
     this.channels$ = this.chatService.state$.pipe(map(x => x.channels))
+  
   }
 
   openChannelList() {

@@ -1,5 +1,5 @@
-<li class="app-chat-channel-message ">
-  <mat-card  [class]="getStyles(bem('card'))">
+<li class="app-chat-channel-message">
+  <mat-card [class]="getStyles(bem('card'))">
     <mat-card-content [class]="bem('container')">
       <div [class]="bem('image-container')">
         <img
@@ -16,9 +16,7 @@
             {{ this.getMessageDate() }}
           </span>
         </div>
-        <div>
-          {{ data.message }}
-        </div>
+        <div [innerHTML]="aax"></div>
       </div>
     </mat-card-content>
   </mat-card>
