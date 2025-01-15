@@ -7,13 +7,13 @@ import { AppDbConfig } from './db/jsondb/core/config'
 import { SCOPED_CONTAINER$$, STATIC_CONTENT_PATH$$ } from './ioc/injection-tokens'
 import { registerOauth2Module } from './ioc/modules/create-auth-module'
 import { registerMongoDb } from './ioc/modules/register-mongo-db'
-import { registerOllamaBackend } from './ioc/modules/register-ollama-backend'
+import { registerOllamaBackendForRoot } from './ioc/modules/register-ollama-backend'
 import { registerApplicationRBACContainer } from './ioc/modules/register-rbac-container'
 import { RootEntryPoint } from './root.entry-point'
 configDotenv()
 
 registerOauth2Module(container)
-registerOllamaBackend(container)
+registerOllamaBackendForRoot(container)
 registerMongoDb(container)
 registerApplicationRBACContainer(container)
 

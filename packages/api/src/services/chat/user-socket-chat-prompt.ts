@@ -7,6 +7,7 @@ import { ChatServerService } from './chat-server-service'
 
 @injectable()
 export class UserSocketChatPrompt {
+  agentName$ = new Subject<string>()
 
   constructor(
     mq: MQ,
@@ -14,8 +15,6 @@ export class UserSocketChatPrompt {
     commsService: ChatServerService,
     prompt: OllamaService,
   ) {
-
-    let aiName = new Subject<string>()
 
     prompt.setHistory([
       { role: "user", content: `keep your messages concise` },
@@ -29,11 +28,11 @@ export class UserSocketChatPrompt {
     ])
 
     merge(
-      from(generateAIBotIdentity(prompt, aiName)),
+      from(generateAIBotIdentity(prompt, this.agentName$)),
       // transfer message from user scope into shared chat service scope
       mq.selectTypedMessage(ClientChatMessage)
         .pipe(
-          withLatestFrom(aiName),
+          withLatestFrom(this.agentName$),
           tap(([data]) => {
             prompt.history.push({ role: "user", content: data.message })
           }),

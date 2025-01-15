@@ -23,6 +23,7 @@ export class OllamaRAGService {
     
     this.chroma = new ChromaClient()
     this.listAllCollections(embeddingFunction)
+    
     this.chroma.getOrCreateCollection({
       name: userProfile.email.replaceAll('@', ''),
       embeddingFunction,
@@ -67,9 +68,9 @@ export class OllamaRAGService {
 
   private async persistDocumentChunks(
     documentUUID: string,
-    documents: string[]
+    chunks: string[]
   ) {
-    for (const [index, content] of documents.entries()) {
+    for (const [index, content] of chunks.entries()) {
       await this.createNewDocument(content, documentUUID, index)
     }
   }
