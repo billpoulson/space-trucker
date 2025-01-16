@@ -6,7 +6,7 @@
     "@angular/core": "^19.0.0"
   },
   "scripts": {
-    "build": "tsc --build tsconfig.dist.json",
+    "build": "tsc --build tsconfig.lib.json",
     "watch": "nodemon --watch src --ext ts,json --exec ng build @space-truckers/common"
   },
   "dependencies": {

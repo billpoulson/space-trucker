@@ -9,7 +9,9 @@ export class OllamaService {
   constructor(
     private settings: OllamaServiceSettings,
     private ollama: Ollama
-  ) { }
+  ) {
+  
+  }
 
   setHistory(
     history: { role: string; content: string }[],

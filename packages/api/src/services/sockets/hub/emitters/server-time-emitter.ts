@@ -1,4 +1,5 @@
 import { ConnectionAuthorizationData } from '@space-truckers/types'
+import { interval, tap } from 'rxjs'
 import { injectable } from 'tsyringe'
 import { ClientWebsocketReference } from '../../../chat/client-web-socket-reference'
 
@@ -9,11 +10,11 @@ export class ServerTimeEmitter {
         public connection: ConnectionAuthorizationData,
         public ws: ClientWebsocketReference
     ) {
-        // interval(1000)
-        //     .pipe(
-        //         tap(x => {
-        //             ws.send({ serverTime: + new Date() })
-        //         }))
-        //     .subscribe()
+        interval(1000)
+            .pipe(
+                tap(x => {
+                    ws.send({ serverTime: + new Date() })
+                }))
+            .subscribe()
     }
 }

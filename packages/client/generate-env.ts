@@ -1,5 +1,19 @@
+import { exec } from 'child_process'
 import * as dotenv from 'dotenv'
-import * as fs from 'fs'
+import fs from 'fs'
+const NODE_ENV = process.env['NODE_ENV']
+exec(`npx dotenv-vault@latest keys ${NODE_ENV}`, (error, stdout, stderr) => {
+  if (error) {
+    console.log(`Error: ${error.message}`)
+    return
+  }
+  if (stderr) {
+    console.log(`Error: ${stderr}`)
+    return
+  }
+  console.log(stdout)
+})
+
 dotenv.config()
 
 // Load environment variables from the .env file

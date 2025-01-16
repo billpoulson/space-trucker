@@ -19,7 +19,8 @@ export class UserSocketChat {
     { send }: ClientWebsocketReference,
     mq: MQ,
   ) {
-    let senderFragment = commsService.register(authInfo.connectionId, userInfo.given_name, socket, send)
+    const referToUserAs = [userInfo.given_name, userInfo.nickname, 'Unknown'].filter(x => x != null)[0]
+    let senderFragment = commsService.register(authInfo.connectionId, referToUserAs, socket, send)
     socket.on('close', () => { commsService.deregister(`${authInfo.connectionId}`) })
     merge(
       // set the current users preferred name

@@ -20,7 +20,7 @@ export default (
         scope.resolve(LoginsRepo),
         scope.resolve(UserInfoObject),
       ]
-      repo.incrementLoginCount(`${+new Date}`)
+      // repo.incrementLoginCount(`${+new Date}`)
       res.send(params.get('response'))
     }))
 

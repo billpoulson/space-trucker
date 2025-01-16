@@ -4,7 +4,7 @@ import { injectable } from 'tsyringe'
 @injectable()
 export class OllamaServiceSettings {
   public embeddingModel = 'mxbai-embed-large'
-  public completionModel = 'llama2'
+  public completionModel = 'llama3.2'
   constructor(
     public baseUrl: string
   ) {

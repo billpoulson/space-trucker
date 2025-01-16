@@ -1,4 +1,5 @@
 import { ChromaDbEmbeddingSettings, OllamaServiceSettings } from '@space-truckers/common'
+import { ChromaClient } from 'chromadb'
 import { Ollama } from 'ollama'
 import { DependencyContainer } from 'tsyringe'
 
@@ -19,5 +20,12 @@ export function registerOllamaBackendForRoot(
                     host: baseUrl
                 })
             }
+        })
+        .registerSingleton(ChromaClient)
+        .register(ChromaClient, {
+            useFactory: () =>
+                new ChromaClient({
+                    path: process.env['CHROMA_DB_BASEURL']
+                })
         })
 }

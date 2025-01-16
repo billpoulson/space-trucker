@@ -2,7 +2,7 @@
   "name": "@space-truckers/types",
   "version": "0.0.1",
   "scripts": {
-    "build": "tsc --build tsconfig.dist.json",
+    "build": "tsc --build tsconfig.lib.json",
     "watch": "nodemon --watch src --ext ts,json --exec ng build @space-truckers/types"
   },
   "peerDependencies": {

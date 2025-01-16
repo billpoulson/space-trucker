@@ -5,10 +5,13 @@
     "packages/*"
   ],
   "scripts": {
-    "dotenv-pull:all": "npm run dotenv-pull --workspaces --if-present",
-    "dotenv-push:all": "npm run dotenv-push --workspaces --if-present",
+    "dotenv-pull:all": "npm run dotenv-pull --workspaces --if-present --include-workspace-root",
+    "dotenv-push:all": "npm run dotenv-push --workspaces --if-present --include-workspace-root",
     "dotenv-pull": "npx dotenv-vault@latest pull",
-    "dotenv-push": "npx dotenv-vault@latest push"
+    "dotenv-push": "npx dotenv-vault@latest push",
+  "dotenv:build": "npx dotenv-vault@latest build",
+    "build-client": "docker build -t talk2resume/client -f dockerfile.client .",
+    "build-api": "docker build -t talk2resume/api -f dockerfile.api ."
   },
   "private": true,
   "dependencies": {
@@ -22,6 +25,7 @@
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
     "@auth0/auth0-angular": "^2.2.3",
+    "@dotenvx/dotenvx": "^1.33.0",
     "@types/mongodb": "^4.0.6",
     "ag-grid-angular": "^33.0.3",
     "axios": "^1.7.9",
@@ -39,12 +43,13 @@
     "lowdb": "^7.0.1",
     "mongodb": "^6.12.0",
     "ollama": "^0.5.12",
-    "pouchdb-adapter-node-websql": "^7.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "~7.8.0",
+    "shelljs": "^0.8.5",
     "three": "^0.172.0",
     "tslib": "^2.3.0",
     "tsx": "^4.19.2",
+    "uuid": "^11.0.5",
     "ws": "^8.18.0",
     "zone.js": "~0.15.0"
   },

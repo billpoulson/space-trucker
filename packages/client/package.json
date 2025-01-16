@@ -4,7 +4,10 @@
   "scripts": {
     "dotenv-pull": "npx dotenv-vault@latest pull",
     "dotenv-push": "npx dotenv-vault@latest push",
-    "generate-env": "nodemon --watch .env --exec tsx generate-env.ts"
+    "dotenv:build": "npx dotenv-vault@latest build",
+    "generate-env:watch": "nodemon --watch .env --exec tsx generate-env.ts",
+    "generate-env": "tsx generate-env.ts",
+    "docker-build": "docker build ."
   },
   "dependencies": {
     "@types/three": "^0.172.0",

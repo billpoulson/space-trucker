@@ -174,7 +174,7 @@
       "label": "watch env",
       "type": "shell",
       "dependsOn": "mongodb",
-      "command": "npm run generate-env -w=@space-truckers/client",
+      "command": "npm run generate-env:watch -w=@space-truckers/client",
       "isBackground": true,
       "problemMatcher": {
         "owner": "dotenv",

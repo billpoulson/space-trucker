@@ -44,6 +44,6 @@ export class AuthorizationResponseEmitter {
     ws.on('close', () => { console.log('WebSocket connection closed.') })
 
     send(authorization)
-    repoImpl.incrementLoginCount(authorization.connectionId.toString())
+    // repoImpl.incrementLoginCount(authorization.connectionId.toString())
   }
 }

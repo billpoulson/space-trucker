@@ -11,19 +11,20 @@ import { OllamaEmbeddingFunction } from './embed/ollama-embedding-function'
 @injectable()
 export class OllamaRAGService {
   isLoaded$ = new BehaviorSubject<boolean>(false)
-  chroma: ChromaClient
+
   collection!: Collection
 
   constructor(
     private ollama: OllamaService,
     private userProfile: UserInfoObject,
     private embedSettings: ChromaDbEmbeddingSettings,
-    private embeddingFunction: OllamaEmbeddingFunction
+    private embeddingFunction: OllamaEmbeddingFunction,
+    private chroma: ChromaClient
   ) {
-    
-    this.chroma = new ChromaClient()
+
+
     this.listAllCollections(embeddingFunction)
-    
+
     this.chroma.getOrCreateCollection({
       name: userProfile.email.replaceAll('@', ''),
       embeddingFunction,

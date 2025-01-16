@@ -101,14 +101,15 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
-              "buildTarget": "@space-truckers/client:build:production"
+              "buildTarget": "@space-truckers/client:build:production",
+              "proxyConfig": "packages/client/proxy.conf.prod.json"
             },
             "development": {
-              "buildTarget": "@space-truckers/client:build:development"
+              "buildTarget": "@space-truckers/client:build:development",
+              "proxyConfig": "packages/client/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
