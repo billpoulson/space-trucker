@@ -3,7 +3,7 @@ import { DependencyContainer } from 'tsyringe'
 import { JWTVerifyOptions } from '../../services/security/oauth/jwt-verify-options'
 import { AUTH_AUDIENCE$$, AUTH_ISSUER_DOMAIN$$ } from '../security/injection-tokens'
 
-export function registerOauth2Module(
+export function registerOauth2ModuleForRoot(
     scope: DependencyContainer
 ): DependencyContainer {
     return scope

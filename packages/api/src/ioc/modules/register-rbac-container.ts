@@ -2,7 +2,7 @@ import { APP_ROLE_RESOLVER_FN$$, ApplicationRBAC, UserRBAC } from '@space-trucke
 import { Role, UserInfoObject } from '@space-truckers/types'
 import { DependencyContainer } from 'tsyringe'
 
-export function registerApplicationRBACContainer(
+export function registerApplicationRBACContainerForRoot(
     scope: DependencyContainer
 ): DependencyContainer {
     return scope

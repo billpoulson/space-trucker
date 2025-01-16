@@ -2,7 +2,7 @@ import { MongoDbSettings } from '@space-truckers/common'
 import { Db, MongoClient } from 'mongodb'
 import { DependencyContainer, FactoryProvider } from 'tsyringe'
 
-export function registerMongoDb(
+export function registerMongoDbForRoot(
     scope: DependencyContainer
 ): DependencyContainer {
     return scope
